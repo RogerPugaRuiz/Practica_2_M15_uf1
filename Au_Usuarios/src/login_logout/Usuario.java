@@ -55,13 +55,25 @@ public class Usuario implements Serializable{
      * @param rol si es administrador o usuario
      */
     public Usuario(String nombre,String apellidos, String email, String password, int rol){
-        this.nombre = nombre;
-        this.apellidos = apellidos;
+        this.nombre = upperCaseFirst(nombre);
+        this.apellidos = upperCaseFirst(apellidos);
         this.email = email;
         this.password = password;
         this.rol = rol;
         this.setLdt();
     }
+    
+    public static String upperCaseFirst(String val) {
+        String[] strs = val.split(" ");
+        String newString = "";
+        for (String str : strs){
+            char[] arr = str.toCharArray();
+            arr[0] = Character.toUpperCase(arr[0]);
+            newString += new String(arr);
+        }
+        
+        return newString;
+   }
     
     /**
      * Metodo para devolver el nombre del usuario.

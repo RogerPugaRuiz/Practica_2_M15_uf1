@@ -5,9 +5,13 @@ package login_logout;
 
 import java.util.Random;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import login_logout.Exception.LoginException;
+import login_logout.Exception.NameLastNameException;
 
 /**
- * Classe con un login de usuario y funciones de administrador de usuarios.
+ * Classe con un showLogin de usuario y funciones de administrador de usuarios.
  * @author roger
  */
 public class AutenticacionUsuarios {
@@ -108,11 +112,11 @@ public class AutenticacionUsuarios {
             do {
                 option = showMenu(MENU);
                 switch (option) {
-                    case 0:
+                    case 0: // exit
                         option = exit();
                         break;
-                    case 1:
-                        login();
+                    case 1: // login
+                        showLogin();
                         break;
                 }
             } while (option != 0);
@@ -168,7 +172,7 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para leer el menu principal del login
+     * Metodo para leer el menu principal del showLogin
      *
      * @return La opcion del usuario
      */
@@ -214,33 +218,46 @@ public class AutenticacionUsuarios {
      * @return La opcion del usuario
      */
     /**
-     * Metodo para iniciar session.
+     * Metodo en el que se pide el e-mail y la contraseña del usuario.
      */
-    public static void login() {
-        final Scanner SCANNER = new Scanner(System.in);
-        System.out.print("e-mail: ");
-        String email = SCANNER.next();
-
-        System.out.print("password: ");
-        String password = SCANNER.next();
-
+    public static void showLogin() {
+        try {
+            final Scanner SCANNER = new Scanner(System.in);
+            System.out.print("e-mail: ");
+            String email = SCANNER.next();
+            
+            System.out.print("password: ");
+            String password = SCANNER.next();
+            
+            login(email, password);
+        } catch (LoginException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    /**
+     * Metodo que valida el login
+     * @param email
+     * @param password 
+     * @throws login_logout.Exception.LoginException 
+     */
+    public static void login(String email, String password) throws LoginException{
         try {
             Usuario loginUser = usuarios.login(email, password);
             System.out.println(loginUser.getAll());
 
             switch (loginUser.getRol()) {
-                case "admin":
+                case "admin": // user is admin
                     admin(loginUser);
                     break;
-                case "user":
+                case "user": // only user
                     user(loginUser);
                     break;
             }
 
         } catch (java.lang.NullPointerException npe) {
-            System.out.println("e-mail o contraseña incorrecta");
+            throw new LoginException("e-mail o contraseña incorrecta");
         }
-
     }
 
     /**
@@ -255,19 +272,19 @@ public class AutenticacionUsuarios {
         do {
             option = showMenu(MENUADMIN);
             switch (option) {
-                case 0:
+                case 0: // exit
                     forceExit();
                     break;
-                case 1:
+                case 1: // get user information
                     System.out.println(loginUser.getAll());
                     break;
-                case 2:
+                case 2: // Create, Read, Update and Delete Methods
                     crud();
                     break;
-                case 3:
+                case 3: // export with json file
                     jsonExport();
                     break;
-                case 4:
+                case 4: // logout
                     option = exit();
                     break;
             }
@@ -292,19 +309,25 @@ public class AutenticacionUsuarios {
         do {
             option = showMenu(CRUD);
             switch (option) {
-                case 0:
+                case 0: // exit
                     option = exit();
                     break;
-                case 1:
-                    create();
+                case 1: 
+                    try {
+                        // create new User
+                        create();
+                    } catch (NameLastNameException ex) {
+                        System.out.println(ex.getMessage());
+                    }
                     break;
-                case 2:
+
+                case 2: // read with diferents options
                     read();
                     break;
-                case 3:
+                case 3: // user update
                     update();
                     break;
-                case 4:
+                case 4: // user delete
                     delete();
                     break;
 
@@ -481,7 +504,7 @@ public class AutenticacionUsuarios {
     /**
      * Metodo para crear un usuario.
      */
-    public static void create() {
+    public static void create() throws NameLastNameException {
         final Scanner SCANNER = new Scanner(System.in);
         
         String nombre;
@@ -510,7 +533,14 @@ public class AutenticacionUsuarios {
         if (rolStr.equalsIgnoreCase("admin")) {
             rol = Usuario.ADMIN;
         }
-        usuarios.add(new Usuario(nombre, apellidos, email, password, rol));
+        
+        if (containNumbers(nombre)){
+            throw new NameLastNameException("Nombre no puede contener numeros");
+        }else if (containNumbers(apellidos)){
+            throw new NameLastNameException("Apellido no puede contener numeros");
+        }else{
+            usuarios.add(new Usuario(nombre, apellidos, email, password, rol));
+        }
     }
 
     /**
@@ -546,5 +576,19 @@ public class AutenticacionUsuarios {
         Bin bin = new Bin();
         bin.addList(usuarios);
         System.exit(0);
+    }
+
+    private static boolean containNumbers(String str) {
+        return 
+            str.contains("1") || 
+            str.contains("2") || 
+            str.contains("3") || 
+            str.contains("4") ||
+            str.contains("5") || 
+            str.contains("6") || 
+            str.contains("7") || 
+            str.contains("8") ||
+            str.contains("9") ||
+            str.contains("0");
     }
 }
