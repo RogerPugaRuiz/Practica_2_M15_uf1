@@ -529,35 +529,41 @@ public class AutenticacionUsuarios {
                     option = exit();
                     break;
                 case 3:
-                    option=showMenu(MENUADN);
-                    int opADN=0;
-                    switch(opADN){
-                        case 0:
-                            opADN=exit();
-                        case 1:
-                            opADN= darVueltaCadenaADN();
-                            break;
-                        case 2:
-                            opADN= baseMasRepetida();
-                            break;
-                        case 3:
-                            opADN = baseMenosRepetida();
-                            break;
-                        case 4:
-                            opADN =mostrarBases();
-                            break;
-                        case 5:
-                            opADN = convertADNtoARN();
-                            break;
-                        case 6:
-                            opADN = convertARNtoADN();
-                            break;
-                    }
+                    option=manageList();
                     
                     
             }
         } while (option != 0);
         return;
+    }
+
+    public static int manageList() {
+        int option;
+        option=showMenu(MENUADN);
+        int opADN=0;
+        switch(opADN){
+            case 0:
+                opADN=exit();
+            case 1:
+                opADN= darVueltaCadenaADN();
+                break;
+            case 2:
+                opADN= baseMasRepetida();
+                break;
+            case 3:
+                opADN = baseMenosRepetida();
+                break;
+            case 4:
+                opADN =mostrarBases();
+                break;
+            case 5:
+                opADN = convertADNtoARN();
+                break;
+            case 6:
+                opADN = convertARNtoADN();
+                break;
+        }
+        return option;
     }
 
     /**
