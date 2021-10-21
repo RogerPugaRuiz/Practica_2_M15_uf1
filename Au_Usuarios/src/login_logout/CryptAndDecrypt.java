@@ -4,7 +4,10 @@
  */
 package login_logout;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.util.Random;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -42,6 +45,18 @@ public class CryptAndDecrypt {
         }
 
         return aes;
+    }
+    
+    public String generateRandomKey(int lenght){
+        
+        String generatedString = "";
+        for (int i=0; i<lenght; i++){
+            int code = new Random().nextInt(1+126)+35;
+            System.out.println(code);
+            char c = (char)(code);
+            generatedString += c;
+        }
+        return new String (generatedString.getBytes(),StandardCharsets.UTF_8);
     }
 
 }

@@ -5,18 +5,11 @@ package login_logout;
 
 import java.util.Random;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import login_logout.Exception.LoginException;
 import login_logout.Exception.NameLastNameException;
 import login_logout.Exception.UserAlreadyExistException;
-import static login_logout.Menus.ATTRIBUTES;
-import static login_logout.Menus.CRUD;
-import static login_logout.Menus.MENU;
-import static login_logout.Menus.MENUADMIN;
-import static login_logout.Menus.MENUADN;
-import static login_logout.Menus.MENUUSER;
-import static login_logout.Menus.READ;
+import static login_logout.Menus.*;
+
 
 /**
  * Classe con un showLogin de usuario y funciones de administrador de usuarios.

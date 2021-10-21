@@ -77,10 +77,19 @@ public class Practica2Test {
         CryptAndDecrypt c = new CryptAndDecrypt();
         try {
             byte[] tex_crypt = c.crypt(text);
+            for (byte b : tex_crypt){
+                System.out.println(b);
+            }
             System.out.println(c.decrypt(tex_crypt));
             assertEquals(text, c.decrypt(tex_crypt));
         } catch (Exception ex) {
             fail(ex.getMessage());
         }
+    }
+    
+    @Test
+    public void randomStringTest(){
+        CryptAndDecrypt c = new CryptAndDecrypt();
+        System.out.println(c.generateRandomKey(100));
     }
 }
