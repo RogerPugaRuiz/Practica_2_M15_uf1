@@ -5,7 +5,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
  */
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import login_logout.AutenticacionUsuarios;
+import login_logout.CryptAndDecrypt;
+import login_logout.Exception.UserAlreadyExistException;
 import login_logout.Usuario;
 import login_logout.Usuarios;
 import org.junit.After;
@@ -47,19 +51,36 @@ public class Practica2Test {
     
     @Test
     public void loginTest(){
-        Usuarios users = new Usuarios();
-        final Usuario EXPECTED_USER = new Usuario(
-                "Roger",
-                "Puga",
-                "roger@gmail.com",
-                "1234", Usuario.USER);
-        users.add(EXPECTED_USER);
-        Usuario user_login = users.login("roger@gmail.com", "1234");
-        Boolean condition = user_login.equals(EXPECTED_USER);
-        assertTrue("Login Correcto",condition);
+        try {
+            Usuarios users = new Usuarios();
+            final Usuario EXPECTED_USER = new Usuario(
+                    "Roger",
+                    "Puga",
+                    "roger@gmail.com",
+                    "1234", Usuario.USER);
+            users.add(EXPECTED_USER);
+            Usuario user_login = users.login("roger@gmail.com", "1234");
+            Boolean condition = user_login.equals(EXPECTED_USER);
+            assertTrue("Login Correcto",condition);
+        } catch (UserAlreadyExistException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
     @Test
     public void createNewUserTest(){
         
+    }
+    
+    @Test
+    public void cryptDecryptTest(){
+        String text = "hola mundo";
+        CryptAndDecrypt c = new CryptAndDecrypt();
+        try {
+            byte[] tex_crypt = c.crypt(text);
+            System.out.println(c.decrypt(tex_crypt));
+            assertEquals(text, c.decrypt(tex_crypt));
+        } catch (Exception ex) {
+            fail(ex.getMessage());
+        }
     }
 }

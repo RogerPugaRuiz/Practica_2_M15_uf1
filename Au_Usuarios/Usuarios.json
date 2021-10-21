@@ -6,6 +6,13 @@
 			"password": "1234",
 			"rol": "admin"
 		},
+                {
+                        "nombre": "Alber",
+                        "apellidos": "Casany",
+                        "email":"albert@gmail.com",
+                        "password":"1234",
+                        "rol":"admin"
+                },
 		{
 			"nombre": "Juan",
 			"apellidos": "Jose Enriquez Piquer",
