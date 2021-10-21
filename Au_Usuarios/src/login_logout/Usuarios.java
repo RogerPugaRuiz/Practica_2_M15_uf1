@@ -7,6 +7,7 @@ package login_logout;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import login_logout.Exception.UserAlreadyExistException;
 
 
 /**
@@ -32,12 +33,11 @@ public class Usuarios implements Iterable<Usuario>{
      * @param u objeto usuario
      * @return boolean
      */
-    public boolean add(Usuario u){
+    public void add(Usuario u) throws UserAlreadyExistException{
         if (usuarios.contains(u)){
-            return false; // no es posible añadir el usuario
+            throw new UserAlreadyExistException("Usuario ya existe");
         }
         usuarios.add(u);
-        return true; // usuario creado con exito.
     }
     
     /**
@@ -106,7 +106,7 @@ public class Usuarios implements Iterable<Usuario>{
      * @param nombre
      * @return Un Objecto usuarios donde se guardan usuarios.
      */
-    public Usuarios searchAll(String nombre){
+    public Usuarios searchAll(String nombre) throws UserAlreadyExistException{
         Usuarios u = new Usuarios();
         for (Usuario usuario : usuarios) {
             if (usuario.getNombre().toLowerCase().contains(nombre.toLowerCase())){
@@ -121,7 +121,7 @@ public class Usuarios implements Iterable<Usuario>{
      * @param apellidos
      * @return Un Objeto usuarios donde se guardan usuarios.
      */
-    public Usuarios searchAll(String nombre, String apellidos){
+    public Usuarios searchAll(String nombre, String apellidos) throws UserAlreadyExistException{
         Usuarios u = new Usuarios();
         for (Usuario usuario : usuarios) {
             if (usuario.getNombre().toLowerCase().contains(nombre.toLowerCase()) || usuario.getApellidos().toLowerCase().contains(apellidos.toLowerCase())){
@@ -190,7 +190,12 @@ public class Usuarios implements Iterable<Usuario>{
         Iterator<Usuario> iterator = u.iterator();
         while(iterator.hasNext()){
             final Usuario usuario = iterator.next();
-            this.add(usuario);
+            
+            try{
+                this.add(usuario);
+            }catch(UserAlreadyExistException ex){
+                System.out.println(ex.getMessage());
+            }
 //            System.out.println(usuario.getAll());
         }
     }

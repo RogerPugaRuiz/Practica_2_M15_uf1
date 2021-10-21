@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
+import login_logout.Exception.UserAlreadyExistException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -52,7 +53,11 @@ public class Json {
                         nextUser.get("password").toString(),
                         rol(nextUser.get("rol").toString()));
                 // lo añadimos a la classe usuarios
-                usuarios.add(usuario);
+                try{
+                    usuarios.add(usuario);
+                }catch(UserAlreadyExistException ex){
+                    System.out.println(ex.getMessage());
+                }
                             
             }
             

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
+import login_logout.Exception.UserAlreadyExistException;
 
 
 /**
@@ -86,9 +87,14 @@ public class Bin {
             while (u != null) {
                 //System.out.println(u.getAll());
                 //añadimos el usuario a la classe usuarios.
-                usuarios.add(u);
-                //siguiente usuario
-                u = (Usuario) ois.readObject();
+                try{
+                    usuarios.add(u);
+                
+                    //siguiente usuario
+                    u = (Usuario) ois.readObject();
+                }catch(UserAlreadyExistException ex){
+                    System.out.println(ex.getMessage());
+                }
                 
             }
             //cerramos la salida de datos

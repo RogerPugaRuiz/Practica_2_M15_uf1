@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import login_logout.Exception.LoginException;
 import login_logout.Exception.NameLastNameException;
+import login_logout.Exception.UserAlreadyExistException;
 
 /**
  * Classe con un showLogin de usuario y funciones de administrador de usuarios.
@@ -121,7 +122,8 @@ public class AutenticacionUsuarios {
                 }
             } while (option != 0);
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return false;
         }
         return true;
@@ -130,15 +132,16 @@ public class AutenticacionUsuarios {
     /**
      * Cargar los archivos json y bin.
      */
-    public static void loadData() {
+    public static void loadData(){
 
+  
         // leer los usuarios guardado en archivo.bin y crearlos.
         Bin bin = new Bin();
         bin.read(usuarios);
-        
+
         // importar archivos json de Usuarios.json
         jsonImport();
-        
+
         // guardar los nuevos jugadores en archivo.bin
         bin.addList(usuarios);
     }
@@ -146,7 +149,7 @@ public class AutenticacionUsuarios {
     /**
      * Metodo para leer y crear Usuario del archivo Usuarios.json.
      */
-    public static void jsonImport() {
+    public static void jsonImport(){
         // importar archivos json de Usuarios.json
 
         try {
@@ -462,40 +465,44 @@ public class AutenticacionUsuarios {
     public static void read() {
         final Scanner SCANNER = new Scanner(System.in);
         
-        int option;
+        int option=-1;
         do {
-            option = showMenu(READ);
-            switch (option) {
-                case 0:
-                    option = exit();
-                    break;
-                case 1:
-                    System.out.println(usuarios.getAll());
-                    System.out.printf("Numero de usuarios: %d\n", usuarios.count());
-                    break;
-                case 2:
-                    System.out.print("E-mail: ");
-                    String email = SCANNER.next();
-                    System.out.println(usuarios.search(email).getAll());
-                    break;
-                case 3:
-                    System.out.print("Nombre: ");
-                    String nombre = SCANNER.next();
-                    Usuarios userSearch = usuarios.searchAll(nombre);
-                    System.out.println(userSearch.getAll());
-                    System.out.printf("Numero de usuarios: %d encontrados\n", userSearch.count());
-                    break;
-                case 4:
-                    System.out.print("Nombre: ");
-                    nombre = SCANNER.next();
-                    System.out.print("Apellido: ");
-                    SCANNER.nextLine();
-                    String apellido = SCANNER.nextLine();
-                    userSearch = usuarios.searchAll(nombre, apellido);
-                    System.out.println(userSearch.getAll());
-                    System.out.printf("Numero de usuario: %d encontrados\n", userSearch.count());
-                    break;
-                    
+            try {
+                option = showMenu(READ);
+                switch (option) {
+                    case 0:
+                        option = exit();
+                        break;
+                    case 1:
+                        System.out.println(usuarios.getAll());
+                        System.out.printf("Numero de usuarios: %d\n", usuarios.count());
+                        break;
+                    case 2:
+                        System.out.print("E-mail: ");
+                        String email = SCANNER.next();
+                        System.out.println(usuarios.search(email).getAll());
+                        break;
+                    case 3:
+                        System.out.print("Nombre: ");
+                        String nombre = SCANNER.next();
+                        Usuarios userSearch = usuarios.searchAll(nombre);
+                        System.out.println(userSearch.getAll());
+                        System.out.printf("Numero de usuarios: %d encontrados\n", userSearch.count());
+                        break;
+                    case 4:
+                        System.out.print("Nombre: ");
+                        nombre = SCANNER.next();
+                        System.out.print("Apellido: ");
+                        SCANNER.nextLine();
+                        String apellido = SCANNER.nextLine();
+                        userSearch = usuarios.searchAll(nombre, apellido);
+                        System.out.println(userSearch.getAll());
+                        System.out.printf("Numero de usuario: %d encontrados\n", userSearch.count());
+                        break;
+                        
+                }
+            } catch (UserAlreadyExistException ex) {
+                System.out.println(ex.getMessage());
             }
         } while (option != 0);
 
@@ -539,7 +546,11 @@ public class AutenticacionUsuarios {
         }else if (containNumbers(apellidos)){
             throw new NameLastNameException("Apellido no puede contener numeros");
         }else{
-            usuarios.add(new Usuario(nombre, apellidos, email, password, rol));
+            try {
+                usuarios.add(new Usuario(nombre, apellidos, email, password, rol));
+            } catch (UserAlreadyExistException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
     }
 
@@ -554,13 +565,13 @@ public class AutenticacionUsuarios {
         do {
             option = showMenu(MENUUSER);
             switch (option) {
-                case 0:
+                case 0: // exit
                     forceExit();
                     break;
-                case 1:
+                case 1: // show info
                     System.out.println(loginUser.getAll());
                     break;
-                case 2:
+                case 2: // logout
                     option = exit();
                     break;
             }
