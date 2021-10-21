@@ -10,6 +10,13 @@ import java.util.logging.Logger;
 import login_logout.Exception.LoginException;
 import login_logout.Exception.NameLastNameException;
 import login_logout.Exception.UserAlreadyExistException;
+import static login_logout.Menus.ATTRIBUTES;
+import static login_logout.Menus.CRUD;
+import static login_logout.Menus.MENU;
+import static login_logout.Menus.MENUADMIN;
+import static login_logout.Menus.MENUADN;
+import static login_logout.Menus.MENUUSER;
+import static login_logout.Menus.READ;
 
 /**
  * Classe con un showLogin de usuario y funciones de administrador de usuarios.
@@ -34,60 +41,7 @@ public class AutenticacionUsuarios {
         "Intenta con algo diferente como un numero",
         "Lo siento pero esto esta fuera de mi programacion"};
     
-    /**
-     * Menu principal.
-     */
-    public static final String[] MENU = {
-        "EXIT",
-        "LOGIN"};
     
-    /**
-     * Menu del usuario.
-     */
-    public static final String[] MENUUSER = {
-        "EXIT",
-        "INFO. USER",
-        "LOGOUT"};
-    
-    /**
-     * Menu del administrador.
-     */
-    public static final String[] MENUADMIN = {
-        "EXIT",
-        "INFO. USER",
-        "C.R.U.D (Create, Read, Update and Delete)",
-        "JSON EXPORT",
-        "LOGOUT"};
-    
-    /**
-     * Menu opciones CRUD.
-     */
-    public static final String[] CRUD = {
-        "EXIT",
-        "CREATE",
-        "READ",
-        "UPDATE",
-        "DELETE"};
-    
-    /**
-     * Menu de lectura.
-     */
-    public static final String[] READ = {
-        "EXIT",
-        "FULL",
-        "SEARCH BY E-MAIL",
-        "SEARCH BY NAME",
-        "SEARCH BY NAME AND LASTNAME"};
-    
-    /**
-     * Menu de los atributos de usuario.
-     */
-    public static final String[] ATTRIBUTES = {
-        "EXIT",
-        "NAME",
-        "LASTNAME",
-        "PASSWORD",
-        "ROL"};
     
     /**
      * Metodo principal.
@@ -574,6 +528,33 @@ public class AutenticacionUsuarios {
                 case 2: // logout
                     option = exit();
                     break;
+                case 3:
+                    option=showMenu(MENUADN);
+                    int opADN=0;
+                    switch(opADN){
+                        case 0:
+                            opADN=exit();
+                        case 1:
+                            opADN= darVueltaCadenaADN();
+                            break;
+                        case 2:
+                            opADN= baseMasRepetida();
+                            break;
+                        case 3:
+                            opADN = baseMenosRepetida();
+                            break;
+                        case 4:
+                            opADN =mostrarBases();
+                            break;
+                        case 5:
+                            opADN = convertADNtoARN();
+                            break;
+                        case 6:
+                            opADN = convertARNtoADN();
+                            break;
+                    }
+                    
+                    
             }
         } while (option != 0);
         return;
@@ -601,5 +582,29 @@ public class AutenticacionUsuarios {
             str.contains("8") ||
             str.contains("9") ||
             str.contains("0");
+    }
+
+    private static int darVueltaCadenaADN() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static int baseMasRepetida() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static int baseMenosRepetida() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static int mostrarBases() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static int convertADNtoARN() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static int convertARNtoADN() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
