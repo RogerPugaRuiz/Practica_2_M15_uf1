@@ -55,7 +55,6 @@ public class AutenticacionUsuarios{
             // cargar los datos guardados en los archivos bin y json.
             // create a phrase for crypting
             loadData();
-            RandomPhrase.generateRandomPhrase(200);
 
             int option = 0;
             do {
@@ -101,7 +100,7 @@ public class AutenticacionUsuarios{
         // importar archivos json de Usuarios.json
 
         try {
-            Json json = new Json(RandomPhrase.getPhrase());
+            Json json = new Json();
             usuarios.addAll(json.jsonImport(JSONFILE));
             System.out.println(usuarios.getAll());
             System.out.printf("Usuarios importados de %s\n", JSONFILE);
@@ -248,7 +247,7 @@ public class AutenticacionUsuarios{
     public static void jsonExport() {
         final Scanner SCANNER = new Scanner(System.in);
         System.out.println("(¡NO ES NECESARIO AÑADIR LA EXTENSION!)\nnombre del archivo json: ");
-        Json json = new Json(RandomPhrase.getPhrase());
+        Json json = new Json();
         json.jsonExport(SCANNER.next() + ".json", usuarios);
     }
 
