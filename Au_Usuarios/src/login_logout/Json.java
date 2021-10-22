@@ -20,8 +20,13 @@ import org.json.simple.parser.ParseException;
  * Classe que importa y exporta Usuarios en json.
  * @author roger
  */
-public class Json {
-
+public class Json extends CryptAndDecrypt{
+    private final String PHRASE;
+    private static boolean isCrypted;
+    
+    public Json(String PHRASE){
+        this.PHRASE = PHRASE;
+    }
     /**
      * Metodo para importar un archivo json en objeto Usuarios
      * @param jsonFile
@@ -46,13 +51,26 @@ public class Json {
             while(iterator.hasNext()){
                 final JSONObject nextUser = iterator.next();
                 // creamos el nuevo usuario
-                final Usuario usuario = new Usuario(
+                Usuario usuario;
+                if (isCrypted){
+//                    String password = this.decrypt(nextUser.get("password").toString(), PHRASE);
+                    usuario = new Usuario(
                         nextUser.get("nombre").toString(),
                         nextUser.get("apellidos").toString(),
                         nextUser.get("email").toString(),
                         nextUser.get("password").toString(),
                         rol(nextUser.get("rol").toString()));
-                // lo añadimos a la classe usuarios
+                    // lo añadimos a la classe usuarios
+                }else{
+                    usuario = new Usuario(
+                        nextUser.get("nombre").toString(),
+                        nextUser.get("apellidos").toString(),
+                        nextUser.get("email").toString(),
+                        nextUser.get("password").toString(),
+                        rol(nextUser.get("rol").toString()));
+                    // lo añadimos a la classe usuarios
+                }
+                
                 try{
                     usuarios.add(usuario);
                 }catch(UserAlreadyExistException ex){
@@ -108,5 +126,15 @@ public class Json {
     // un 2. Caso contrario un 1.
     private int rol(String s){
         return s.equalsIgnoreCase("admin") ? 2 : 1;
+    }
+
+    @Override
+    public String startCrypting(String paraCifrar, String phrase) {
+        return "";
+    }
+
+    @Override
+    public String startDecrypting(String paraCifrar, String phrase) {
+        return "";
     }
 }

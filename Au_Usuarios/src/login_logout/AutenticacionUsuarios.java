@@ -15,7 +15,7 @@ import static login_logout.Menus.*;
  * Classe con un showLogin de usuario y funciones de administrador de usuarios.
  * @author roger
  */
-public class AutenticacionUsuarios {
+public class AutenticacionUsuarios{
     /**
      * Conjunto de usuarios.
      */
@@ -34,13 +34,12 @@ public class AutenticacionUsuarios {
         "Intenta con algo diferente como un numero",
         "Lo siento pero esto esta fuera de mi programacion"};
     
-    
-    
     /**
      * Metodo principal.
      * @param args 
      */
     public static void main(String[] args) {
+        
         if (!run()) {
             System.out.println("Imposible ejecutar el programa");
         }
@@ -54,7 +53,9 @@ public class AutenticacionUsuarios {
     public static boolean run() {
         try {
             // cargar los datos guardados en los archivos bin y json.
+            // create a phrase for crypting
             loadData();
+            RandomPhrase.generateRandomPhrase(200);
 
             int option = 0;
             do {
@@ -100,7 +101,7 @@ public class AutenticacionUsuarios {
         // importar archivos json de Usuarios.json
 
         try {
-            Json json = new Json();
+            Json json = new Json(RandomPhrase.getPhrase());
             usuarios.addAll(json.jsonImport(JSONFILE));
             System.out.println(usuarios.getAll());
             System.out.printf("Usuarios importados de %s\n", JSONFILE);
@@ -247,7 +248,7 @@ public class AutenticacionUsuarios {
     public static void jsonExport() {
         final Scanner SCANNER = new Scanner(System.in);
         System.out.println("(¡NO ES NECESARIO AÑADIR LA EXTENSION!)\nnombre del archivo json: ");
-        Json json = new Json();
+        Json json = new Json(RandomPhrase.getPhrase());
         json.jsonExport(SCANNER.next() + ".json", usuarios);
     }
 

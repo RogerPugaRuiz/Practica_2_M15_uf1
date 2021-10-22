@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import login_logout.AutenticacionUsuarios;
 import login_logout.CryptAndDecrypt;
 import login_logout.Exception.UserAlreadyExistException;
+import login_logout.RandomPhrase;
 import login_logout.Usuario;
 import login_logout.Usuarios;
 import org.junit.After;
@@ -66,28 +67,33 @@ public class Practica2Test {
             System.out.println(ex.getMessage());
         }
     }
-    @Test
-    public void createNewUserTest(){
-        
-    }
     
-    @Test
-    public void cryptDecryptTest(){
-        String text = "hola mundo";
-        CryptAndDecrypt c = new CryptAndDecrypt();
-        c.setPhrase(CryptAndDecrypt.generateRandomKey(200));
-        try {
-            byte[] tex_crypt = c.crypt(text);
-            System.out.println(c.decrypt(tex_crypt));
-            assertEquals(text, c.decrypt(tex_crypt));
-        } catch (Exception ex) {
-            fail(ex.getMessage());
-        }
-    }
+//    @Test
+//    public void cryptDecryptTest(){
+//        String text = "hola mundo";
+//        CryptAndDecrypt c = new CryptAndDecrypt();
+//        RandomPhrase.generateRandomPhrase(200);
+//        try {
+//            byte[] tex_crypt = c.crypt(text,RandomPhrase.getPhrase());
+//            System.out.println(c.decrypt(tex_crypt,RandomPhrase.getPhrase()));
+//            assertEquals(text, c.decrypt(tex_crypt,RandomPhrase.getPhrase()));
+//        } catch (Exception ex) {
+//            fail(ex.getMessage());
+//        }
+//    }
     
     @Test
     public void randomStringTest(){
-        CryptAndDecrypt c = new CryptAndDecrypt();
-        System.out.println(c.generateRandomKey(100));
+        System.out.println(RandomPhrase.getPhrase());
     }
+    
+    
+    @Test
+    public void cryptPasswordJson(){
+        
+    }
+
 }
+
+
+

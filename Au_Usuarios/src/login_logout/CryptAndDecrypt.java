@@ -15,24 +15,16 @@ import javax.crypto.spec.SecretKeySpec;
  *
  * @author roger
  */
-public class CryptAndDecrypt {
-    private String phrase;
-    
-    
-    public void setPhrase(String phrase){
-        this.phrase = phrase;
-    }
-    public String getPhrase(){
-        return this.phrase;
-    }
-    public byte[] crypt(String sinCifrar) throws Exception {
+public abstract class CryptAndDecrypt {
+
+    public byte[] crypt(String sinCifrar,String phrase) throws Exception {
         final byte[] bytes = sinCifrar.getBytes("UTF-8");
         final Cipher aes = obtieneCipher(true,phrase);
         final byte[] cifrado = aes.doFinal(bytes);
         return cifrado;
     }
 
-    public String decrypt(byte[] cifrado) throws Exception {
+    public String decrypt(byte[] cifrado,String phrase) throws Exception {
         final Cipher aes = obtieneCipher(false,phrase);
         final byte[] bytes = aes.doFinal(cifrado);
         final String sinCifrar = new String(bytes, "UTF-8");
@@ -55,15 +47,7 @@ public class CryptAndDecrypt {
         return aes;
     }
     
-    public static String generateRandomKey(int lenght){
-        
-        String generatedString = "";
-        for (int i=0; i<lenght; i++){
-            int code = new Random().nextInt(1+126)+35;
-            char c = (char)(code);
-            generatedString += c;
-        }
-        return new String (generatedString.getBytes(),StandardCharsets.UTF_8);
-    }
-
+    public abstract String startCrypting(String paraCifrar,String phrase);
+    
+    public abstract String startDecrypting(String paraCifrar,String phrase);
 }
