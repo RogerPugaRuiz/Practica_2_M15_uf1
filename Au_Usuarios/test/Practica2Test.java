@@ -75,11 +75,9 @@ public class Practica2Test {
     public void cryptDecryptTest(){
         String text = "hola mundo";
         CryptAndDecrypt c = new CryptAndDecrypt();
+        c.setPhrase(CryptAndDecrypt.generateRandomKey(200));
         try {
             byte[] tex_crypt = c.crypt(text);
-            for (byte b : tex_crypt){
-                System.out.println(b);
-            }
             System.out.println(c.decrypt(tex_crypt));
             assertEquals(text, c.decrypt(tex_crypt));
         } catch (Exception ex) {
