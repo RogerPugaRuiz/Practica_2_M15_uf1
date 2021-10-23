@@ -45,6 +45,7 @@ public class Menus {
         "INFO. USER",
         "C.R.U.D (Create, Read, Update and Delete)",
         "JSON EXPORT",
+        "JSON IMPORT",
         "LOGOUT"};
     
     /**

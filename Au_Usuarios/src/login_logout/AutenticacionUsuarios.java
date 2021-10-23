@@ -3,6 +3,8 @@
  */
 package login_logout;
 
+import Encryption.EncryptAndDecrypt;
+import PrivateToken.PrivateToken;
 import java.util.Random;
 import java.util.Scanner;
 import login_logout.Exception.LoginException;
@@ -24,7 +26,6 @@ public class AutenticacionUsuarios{
     /**
      * nombre del archivo json.
      */
-    public static final String JSONFILE = "Usuarios.json";
     
     /**
      * Posibles mensajes de error.
@@ -34,12 +35,14 @@ public class AutenticacionUsuarios{
         "Intenta con algo diferente como un numero",
         "Lo siento pero esto esta fuera de mi programacion"};
     
+    private static String token; 
     /**
      * Metodo principal.
      * @param args 
      */
     public static void main(String[] args) {
-        
+        PrivateToken pt = new PrivateToken();
+        token = pt.getToken();
         if (!run()) {
             System.out.println("Imposible ejecutar el programa");
         }
@@ -84,13 +87,18 @@ public class AutenticacionUsuarios{
   
         // leer los usuarios guardado en archivo.bin y crearlos.
         Bin bin = new Bin();
-        bin.read(usuarios);
+        bin.read(usuarios,AutenticacionUsuarios.token);
+
 
         // importar archivos json de Usuarios.json
+
         jsonImport();
 
         // guardar los nuevos jugadores en archivo.bin
-        bin.addList(usuarios);
+
+        bin.addList(usuarios,AutenticacionUsuarios.token);
+        
+        
     }
 
     /**
@@ -99,14 +107,22 @@ public class AutenticacionUsuarios{
     public static void jsonImport(){
         // importar archivos json de Usuarios.json
 
-        try {
-            Json json = new Json();
-            usuarios.addAll(json.jsonImport(JSONFILE));
-            System.out.println(usuarios.getAll());
-            System.out.printf("Usuarios importados de %s\n", JSONFILE);
-        } catch (java.lang.NullPointerException npe) {
-            System.out.printf("No existe el archivo %s\n", JSONFILE);
-        }
+
+            Scanner sc = new Scanner(System.in);
+            System.out.println("¿Quieres importar usuarios de un archivo Json?(Si/No)");
+            char s = sc.next().charAt(0);
+            if (s == 'S' || s == 's'){
+                System.out.println("Nombre del archivo json(*No escriba la extension json*)");
+                String jsonFile = sc.next()+".json";
+                try{
+                    Json json = new Json();
+                    usuarios.addAll(json.jsonImport(jsonFile));
+                    System.out.printf("Usuarios importados de %s\n", jsonFile);
+                }catch(NullPointerException ex){
+                    System.out.printf("No existe el archivo %s\n", jsonFile);
+                }
+            }
+
     }
 
     /**
@@ -117,7 +133,11 @@ public class AutenticacionUsuarios{
      */
     public static int exit() {
         Bin bin = new Bin();
-        bin.addList(usuarios);
+        try{
+            bin.addList(usuarios,"hola");
+        }catch(Exception ex){
+            System.out.println("Error al intentar salir, es posible que no se guarden todos los archivos");
+        }
         return 0;
     }
 
@@ -234,7 +254,11 @@ public class AutenticacionUsuarios{
                 case 3: // export with json file
                     jsonExport();
                     break;
-                case 4: // logout
+                case 4: // import with json file
+                    
+                    jsonImport();
+                    break;
+                case 5: // logout
                     option = exit();
                     break;
             }
@@ -550,7 +574,6 @@ public class AutenticacionUsuarios{
                     
             }
         } while (option != 0);
-        return;
     }
 
     /**
@@ -559,7 +582,7 @@ public class AutenticacionUsuarios{
     public static void forceExit() {
         // guardar los usuarios en archivos.bin y cerrar la aplicación
         Bin bin = new Bin();
-        bin.addList(usuarios);
+        bin.addList(usuarios,AutenticacionUsuarios.token);
         System.exit(0);
     }
 

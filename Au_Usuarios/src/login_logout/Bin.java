@@ -5,13 +5,20 @@
  */
 package login_logout;
 
+import Encryption.EncryptAndDecrypt;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import login_logout.Exception.UserAlreadyExistException;
 
 
@@ -25,7 +32,6 @@ public class Bin {
      * Contructor por defecto.
      */
     public Bin(){
-        
     }
     
     /**
@@ -33,14 +39,26 @@ public class Bin {
      * @param u
      * @return boolean true si la escritura fue un exito
      */
-    public boolean add(Usuario u){
+    public boolean add(Usuario u,String token) {
         try{
             // crear el objeto de output stream
             ObjectOutputStream oss = new ObjectOutputStream(new FileOutputStream("archivo.bin"));
             // escribir solo un usuario
+            
+            EncryptAndDecrypt ead = new EncryptAndDecrypt();
+            
+            String password = u.getPassword();
+            u.setPassword(ead.encrypt(password, token));
             oss.writeObject(u); 
+            u.setPassword(password);
             return true;
         }catch (IOException e){
+            return false;
+        }catch (NullPointerException ex){
+            System.out.println("Token invalido");
+            return false;
+        }catch (Exception ex){
+            System.out.println("Error inesperado relacionado con la encriptacion del archivo.bin");
             return false;
         }
     }
@@ -49,7 +67,7 @@ public class Bin {
      * Metodo para añadir multiples usuarios al archivo bin.
      * @param usuarios 
      */
-    public void addList(Usuarios usuarios){
+    public void addList(Usuarios usuarios,String token) {
 
         try{
             // crear objeto de salida de datos
@@ -60,13 +78,23 @@ public class Bin {
             // mientras exista algun usuario
             while(iterator.hasNext()){
                 //escribe el usuario en el documento "archivo.bin"
-                oss.writeObject(iterator.next());
+                EncryptAndDecrypt ead = new EncryptAndDecrypt();
+                Usuario u = iterator.next();
+                String password = u.getPassword();
+                u.setPassword(ead.encrypt(password, token));
+                oss.writeObject(u);
+                u.setPassword(password);
             }
             // no existe más usuarios y se cierra la salida de datos
             oss.close();
         }catch (IOException e){
             System.out.println(e.getMessage());
+        }catch (NullPointerException ex){
+            System.out.println("Token invalido");
+        }catch (Exception ex){
+            System.out.println("Error inesperado relacionado con archivo.bin");
         }
+        
     }
     
     
@@ -74,7 +102,7 @@ public class Bin {
      * Metodo para leer del archivo bin y crear los usuarios
      * @param usuarios 
      */
-    public void read(Usuarios usuarios){
+    public void read(Usuarios usuarios,String token) {
         try {
             
             //nueva salida de datos de objetos
@@ -88,19 +116,29 @@ public class Bin {
                 //System.out.println(u.getAll());
                 //añadimos el usuario a la classe usuarios.
                 try{
+                    
+                    EncryptAndDecrypt ead = new EncryptAndDecrypt();
+
+                    String password = u.getPassword();
+                    u.setPassword(ead.decrypt(password, token));
+                    
                     usuarios.add(u);
-                
+
                     //siguiente usuario
-                    u = (Usuario) ois.readObject();
-                }catch(UserAlreadyExistException ex){
+                    
+                } catch (UserAlreadyExistException ex) {
                     System.out.println(ex.getMessage());
+                } catch (NullPointerException ex) {
+                    System.out.println("Token invalido");
+                } catch (Exception ex) {
+                    System.out.println("Error inesperado relacionado con archivo.bin");
                 }
-                
+                u = (Usuario) ois.readObject();
             }
             //cerramos la salida de datos
             ois.close();
         } catch (FileNotFoundException ex) {
-            
+            System.out.println("archivo binario no creado");
         } catch (IOException ex) {
             
         } catch (ClassNotFoundException ex) {

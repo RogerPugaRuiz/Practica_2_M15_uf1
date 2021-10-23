@@ -5,13 +5,14 @@
  */
 package login_logout;
 
+import Encryption.EncryptAndDecrypt;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
-import login_logout.Exception.UserAlreadyExistException;
+import java.util.Scanner;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -23,6 +24,8 @@ import org.json.simple.parser.ParseException;
  * @author roger
  */
 public class Json {
+
+    private static boolean isJsonEncrypt = false;
 
     /**
      * Metodo para importar un archivo json en objeto Usuarios
@@ -45,24 +48,46 @@ public class Json {
             Iterator<JSONObject> iterator = listaUsuarios.iterator();
             Usuarios usuarios = new Usuarios();
 
+            Scanner sc = new Scanner(System.in);
+            System.out.println("¿Las contraseñas estan encriptada?(Si/No)");
+            char s = sc.next().charAt(0);
+            String key = "";
+            if (s == 'S' || s == 's') {
+                System.out.println("Escribe el token: ");
+                key = sc.next();
+                Json.isJsonEncrypt = true;
+            } else {
+                Json.isJsonEncrypt = false;
+            }
+
             // mientras el siguente iterador existe
             while (iterator.hasNext()) {
                 final JSONObject nextUser = iterator.next();
                 // creamos el nuevo usuario
-                Usuario usuario;
-                usuario = new Usuario(
-                        nextUser.get("nombre").toString(),
-                        nextUser.get("apellidos").toString(),
-                        nextUser.get("email").toString(),
-                        nextUser.get("password").toString(),
-                        rol(nextUser.get("rol").toString()));
-                // lo añadimos a la classe usuarios
+                Usuario usuario = null;
 
-                try {
-                    usuarios.add(usuario);
-                } catch (UserAlreadyExistException ex) {
-                    System.out.println(ex.getMessage());
+                if (Json.isJsonEncrypt) {
+
+                    EncryptAndDecrypt ead = new EncryptAndDecrypt();
+                    String password = ead.decrypt(nextUser.get("password").toString(), key);
+                    usuario = new Usuario(
+                            nextUser.get("nombre").toString(),
+                            nextUser.get("apellidos").toString(),
+                            nextUser.get("email").toString(),
+                            password,
+                            rol(nextUser.get("rol").toString()));
+                    // lo añadimos a la classe usuarios
+                } else {
+                    usuario = new Usuario(
+                            nextUser.get("nombre").toString(),
+                            nextUser.get("apellidos").toString(),
+                            nextUser.get("email").toString(),
+                            nextUser.get("password").toString(),
+                            rol(nextUser.get("rol").toString()));
+                    // lo añadimos a la classe usuarios
                 }
+
+                usuarios.add(usuario);
 
             }
 
@@ -70,6 +95,10 @@ public class Json {
         } catch (FileNotFoundException ex) {
         } catch (IOException ex) {
         } catch (ParseException ex) {
+        }catch (NullPointerException ex){
+            System.out.println("Token invalido");
+        }catch (Exception ex){
+            System.out.println("Error inesperado relacionado con" + jsonFile + ".json");
         }
 
         return null;
@@ -86,18 +115,31 @@ public class Json {
         JSONObject obj = new JSONObject();
         JSONArray list = new JSONArray();
         Iterator<Usuario> i = usuarios.iterator();
-
+        
+        // create a token for encrypt and decrypt file
+        EncryptAndDecrypt ead = new EncryptAndDecrypt();
+        String token = ead.getKey();
+        System.out.println("token-> " + token);
+        
         // mientras exista algun usuario
         while (i.hasNext()) {
-            Usuario u = i.next();
-            JSONObject objUsuario = new JSONObject();
-            objUsuario.put("nombre", u.getNombre());
-            objUsuario.put("apellidos", u.getApellidos());
-            objUsuario.put("email", u.getEmail());
-            objUsuario.put("password", u.getPassword());
-            objUsuario.put("rol", u.getRol());
-            // añadimos el usuarios al array list de usuarios
-            list.add(objUsuario);
+            try {
+                Usuario u = i.next();
+                
+                String encryptPassword = ead.encrypt(u.getPassword(), token);
+                JSONObject objUsuario = new JSONObject();
+                objUsuario.put("nombre", u.getNombre());
+                objUsuario.put("apellidos", u.getApellidos());
+                objUsuario.put("email", u.getEmail());
+                objUsuario.put("password", encryptPassword);
+                objUsuario.put("rol", u.getRol());
+                // añadimos el usuarios al array list de usuarios
+                list.add(objUsuario);
+            } catch (NullPointerException ex) {
+                System.out.println("Token invalido");
+            } catch (Exception ex) {
+                System.out.println("Error inesperado relacionado con" + jsonFile + ".json");
+            }
         }
         // añadimos el array list en el objeto json
         obj.put("usuarios", list);

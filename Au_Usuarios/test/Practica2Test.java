@@ -5,6 +5,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
  */
 
+
+
+import Encryption.EncryptAndDecrypt;
+import PrivateToken.PrivateToken;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+
 import login_logout.Exception.UserAlreadyExistException;
 import login_logout.Usuario;
 import login_logout.Usuarios;
@@ -62,21 +76,48 @@ public class Practica2Test {
             System.out.println(ex.getMessage());
         }
     }
+
+
+    @Test
+    public void encryptTest(){
+        try {
+            String key = "holalskdjflksjdflksjdlfkjsdkjf";
+            String expected = "hola mundo";
+            EncryptAndDecrypt ead = new EncryptAndDecrypt();
+            String encrypt = ead.encrypt(expected, key);
+            String decrypt = ead.decrypt(encrypt, key);
+            
+            assertTrue("encrypt correct", expected.equals(decrypt));
+            System.out.println(decrypt);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidKeyException ex) {
+            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
-//    @Test
-//    public void cryptDecryptTest(){
-//        String text = "hola mundo";
-//        CryptAndDecrypt c = new CryptAndDecrypt();
-//        RandomPhrase.generateRandomPhrase(200);
-//        try {
-//            byte[] tex_crypt = c.crypt(text,RandomPhrase.getPhrase());
-//            System.out.println(c.decrypt(tex_crypt,RandomPhrase.getPhrase()));
-//            assertEquals(text, c.decrypt(tex_crypt,RandomPhrase.getPhrase()));
-//        } catch (Exception ex) {
-//            fail(ex.getMessage());
-//        }
-//    }
+    @Test
+    public void generateTokenTest(){
+        EncryptAndDecrypt ead = new EncryptAndDecrypt();
+        assertTrue("todo correcto", ead.getKey().length() == 100);
+        
+    }
     
+    @Test
+    public void privateTokenTest(){
+        PrivateToken pt = new PrivateToken();
+        String key = pt.getToken();
+        String repeatKey = pt.getToken();
+        assertTrue("correcto",key.equals(repeatKey));
+    }
 
 }
 
