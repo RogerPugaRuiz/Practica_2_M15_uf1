@@ -8,6 +8,7 @@
 
 
 import Encryption.EncryptAndDecrypt;
+import PrivateToken.PrivateToken;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -104,10 +105,18 @@ public class Practica2Test {
     }
     
     @Test
-    public void generateToken(){
+    public void generateTokenTest(){
         EncryptAndDecrypt ead = new EncryptAndDecrypt();
         assertTrue("todo correcto", ead.getKey().length() == 100);
         
+    }
+    
+    @Test
+    public void privateTokenTest(){
+        PrivateToken pt = new PrivateToken();
+        String key = pt.getToken();
+        String repeatKey = pt.getToken();
+        assertTrue("correcto",key.equals(repeatKey));
     }
 
 }

@@ -4,6 +4,7 @@
 package login_logout;
 
 import Encryption.EncryptAndDecrypt;
+import PrivateToken.PrivateToken;
 import java.util.Random;
 import java.util.Scanner;
 import login_logout.Exception.LoginException;
@@ -40,8 +41,8 @@ public class AutenticacionUsuarios{
      * @param args 
      */
     public static void main(String[] args) {
-        EncryptAndDecrypt ead = new EncryptAndDecrypt();
-        token = ead.getKey();
+        PrivateToken pt = new PrivateToken();
+        token = pt.getToken();
         if (!run()) {
             System.out.println("Imposible ejecutar el programa");
         }
@@ -92,8 +93,6 @@ public class AutenticacionUsuarios{
         // importar archivos json de Usuarios.json
 
         jsonImport();
-
-        System.out.println("Error al importar el fichero json");
 
         // guardar los nuevos jugadores en archivo.bin
 
