@@ -5,12 +5,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
  */
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import login_logout.AutenticacionUsuarios;
-import login_logout.CryptAndDecrypt;
+
+import Encryption.EncryptAndDecrypt;
 import login_logout.Exception.UserAlreadyExistException;
-import login_logout.RandomPhrase;
 import login_logout.Usuario;
 import login_logout.Usuarios;
 import org.junit.After;
@@ -67,32 +64,25 @@ public class Practica2Test {
             System.out.println(ex.getMessage());
         }
     }
-    
-//    @Test
-//    public void cryptDecryptTest(){
-//        String text = "hola mundo";
-//        CryptAndDecrypt c = new CryptAndDecrypt();
-//        RandomPhrase.generateRandomPhrase(200);
-//        try {
-//            byte[] tex_crypt = c.crypt(text,RandomPhrase.getPhrase());
-//            System.out.println(c.decrypt(tex_crypt,RandomPhrase.getPhrase()));
-//            assertEquals(text, c.decrypt(tex_crypt,RandomPhrase.getPhrase()));
-//        } catch (Exception ex) {
-//            fail(ex.getMessage());
-//        }
-//    }
-    
+
     @Test
-    public void randomStringTest(){
-        System.out.println(RandomPhrase.getPhrase());
+    public void encryptTest(){
+        String key = "holalskdjflksjdflksjdlfkjsdkjf";
+        String expected = "hola mundo";
+        EncryptAndDecrypt ead = new EncryptAndDecrypt();
+        String encrypt = ead.encrypt(expected, key);
+        String decrypt = ead.decrypt(encrypt, key);
+        
+        assertTrue("encrypt correct", expected.equals(decrypt));
+        System.out.println(decrypt);
     }
     
-    
     @Test
-    public void cryptPasswordJson(){
+    public void generateToken(){
+        EncryptAndDecrypt ead = new EncryptAndDecrypt();
+        assertTrue("todo correcto", ead.getKey().length() == 100);
         
     }
-
 }
 
 

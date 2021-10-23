@@ -35,7 +35,7 @@ public class Usuarios implements Iterable<Usuario>{
      */
     public void add(Usuario u) throws UserAlreadyExistException{
         if (usuarios.contains(u)){
-            throw new UserAlreadyExistException("Usuario ya existe");
+            throw new UserAlreadyExistException("Usuario ya existe");    
         }
         usuarios.add(u);
     }
@@ -193,8 +193,11 @@ public class Usuarios implements Iterable<Usuario>{
             
             try{
                 this.add(usuario);
+                System.out.println(usuario.getAll());
+                System.out.println("======================");
             }catch(UserAlreadyExistException ex){
-                System.out.println(ex.getMessage());
+                System.out.println(usuario.getEmail() + ": " +ex.getMessage());
+                System.out.println("======================");
             }
 //            System.out.println(usuario.getAll());
         }
