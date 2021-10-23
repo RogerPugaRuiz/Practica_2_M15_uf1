@@ -6,7 +6,18 @@
  */
 
 
+
 import Encryption.EncryptAndDecrypt;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+
 import login_logout.Exception.UserAlreadyExistException;
 import login_logout.Usuario;
 import login_logout.Usuarios;
@@ -65,16 +76,31 @@ public class Practica2Test {
         }
     }
 
+
     @Test
     public void encryptTest(){
-        String key = "holalskdjflksjdflksjdlfkjsdkjf";
-        String expected = "hola mundo";
-        EncryptAndDecrypt ead = new EncryptAndDecrypt();
-        String encrypt = ead.encrypt(expected, key);
-        String decrypt = ead.decrypt(encrypt, key);
-        
-        assertTrue("encrypt correct", expected.equals(decrypt));
-        System.out.println(decrypt);
+        try {
+            String key = "holalskdjflksjdflksjdlfkjsdkjf";
+            String expected = "hola mundo";
+            EncryptAndDecrypt ead = new EncryptAndDecrypt();
+            String encrypt = ead.encrypt(expected, key);
+            String decrypt = ead.decrypt(encrypt, key);
+            
+            assertTrue("encrypt correct", expected.equals(decrypt));
+            System.out.println(decrypt);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidKeyException ex) {
+            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @Test
@@ -83,6 +109,7 @@ public class Practica2Test {
         assertTrue("todo correcto", ead.getKey().length() == 100);
         
     }
+
 }
 
 
