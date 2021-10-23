@@ -5,12 +5,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
  */
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import login_logout.AutenticacionUsuarios;
-import login_logout.CryptAndDecrypt;
 import login_logout.Exception.UserAlreadyExistException;
-import login_logout.RandomPhrase;
 import login_logout.Usuario;
 import login_logout.Usuarios;
 import org.junit.After;
@@ -82,16 +77,6 @@ public class Practica2Test {
 //        }
 //    }
     
-    @Test
-    public void randomStringTest(){
-        System.out.println(RandomPhrase.getPhrase());
-    }
-    
-    
-    @Test
-    public void cryptPasswordJson(){
-        
-    }
 
 }
 
