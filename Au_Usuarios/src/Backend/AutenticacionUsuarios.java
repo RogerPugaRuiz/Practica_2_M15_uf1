@@ -133,8 +133,9 @@ public class AutenticacionUsuarios{
      */
     public static int exit() {
         Bin bin = new Bin();
+        PrivateToken pt = new PrivateToken();
         try{
-            bin.addList(usuarios,"hola");
+            bin.addList(usuarios,pt.getToken());
         }catch(Exception ex){
             System.out.println("Error al intentar salir, es posible que no se guarden todos los archivos");
         }
