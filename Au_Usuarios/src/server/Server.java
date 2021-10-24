@@ -8,6 +8,11 @@ package server;
  *
  * @author roger
  */
-public class SocketServer {
-    
+public class Server {
+    public static void main(String[] args) {
+        ThreadLogin threadLogin = new ThreadLogin();
+        threadLogin.setPort(8877);
+        Thread miThread = new Thread(threadLogin);
+        miThread.start();
+    }
 }

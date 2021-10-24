@@ -11,6 +11,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -260,23 +261,35 @@ public class Login extends javax.swing.JFrame{
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void submit() {
-        String email = jTextField_name.getText();
-        String password = jPasswordField.getText();
-        Client client = new Client(){
-            @Override
-            void run() {
-                try {
-                    DataOutputStream dos = new DataOutputStream(Client.getSocket().getOutputStream());
-                    dos.writeUTF(email);
-                    dos.writeUTF(password);
-                    dos.close();
-                    System.out.println(email + "\n" + password);
-                } catch (IOException ex) {
-                    System.out.println(ex.getMessage());
-                }
-            }
+        try {
+            String email = jTextField_name.getText();
+            String password = jPasswordField.getText();
+            Socket socket= new Socket(ClientSocket.getIp(),ClientSocket.getPort());
+            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+            dos.writeUTF(email);
+            socket.close();
+            System.out.println(email);
             
-        };
+//        Client client = new Client(){
+//            @Override
+//            void run() {
+//                try {
+//                    Client.setSocket();
+//                    DataOutputStream dos = new DataOutputStream(Client.getSocket().getOutputStream());
+//                    dos.writeUTF(email);
+//                    Client.getSocket().close();
+//                    System.out.println(email + "\n" + password);
+//                } catch (IOException ex) {
+//                    System.out.println(ex.getMessage());
+//                }
+//            }
+//            
+//        };
+//        
+//        client.run();
+        } catch (IOException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
 
@@ -324,8 +337,8 @@ public class Login extends javax.swing.JFrame{
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        jTextPane1.setText(Client.getIp());
-        jTextPane2.setText(Integer.toString(Client.getPort()));
+        jTextPane1.setText(ClientSocket.getIp());
+        jTextPane2.setText(Integer.toString(ClientSocket.getPort()));
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
@@ -360,8 +373,9 @@ public class Login extends javax.swing.JFrame{
             public void run() {
                 Login login = new Login();
                 login.setVisible(true);
-                login.jTextPane1.setText(Client.getIp());
-                login.jTextPane2.setText(Integer.toString(Client.getPort()));
+                
+                login.jTextPane1.setText(ClientSocket.getIp());
+                login.jTextPane2.setText(Integer.toString(ClientSocket.getPort())); 
             }
         });
     }

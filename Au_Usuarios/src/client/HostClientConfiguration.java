@@ -113,8 +113,8 @@ public class HostClientConfiguration extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Client.setIp(this.jTextField1.getText());
-        Client.setPort(Integer.parseInt(this.jTextField2.getText()));
+        ClientSocket.setIp(this.jTextField1.getText());
+        ClientSocket.setPort(Integer.parseInt(this.jTextField2.getText()));
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
