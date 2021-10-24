@@ -4,6 +4,7 @@
  */
 package client;
 
+import Backend.Usuario;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -22,12 +23,12 @@ import javax.swing.SwingUtilities;
  *
  * @author roger
  */
-public class Login extends javax.swing.JFrame{
+public class LoginFrame extends javax.swing.JFrame{
 
     /**
      * Creates new form Login
      */
-    public Login() {
+    public LoginFrame() {
         initComponents();
     }
 
@@ -269,7 +270,8 @@ public class Login extends javax.swing.JFrame{
             LoginClient loginClient = new LoginClient(email,password);
             loginClient.setRoot(this);
             Thread thread = new Thread(loginClient);
-            thread.start();   
+            thread.start();
+
         }
         
     }
@@ -342,20 +344,21 @@ public class Login extends javax.swing.JFrame{
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Login login = new Login();
+                LoginFrame login = new LoginFrame();
                 login.setVisible(true);
                 
                 ShowHost showTask = new ShowHost(login.jTextPane1, login.jTextPane2);
@@ -364,10 +367,6 @@ public class Login extends javax.swing.JFrame{
             }
         });
     }
-    
-    
-    
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

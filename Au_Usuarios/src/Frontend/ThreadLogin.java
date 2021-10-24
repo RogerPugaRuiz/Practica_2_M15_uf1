@@ -38,20 +38,20 @@ public class ThreadLogin implements Runnable{
                 DataInputStream dis = new DataInputStream(socket.getInputStream());
                 String mensage = dis.readUTF();
                 JSONObject json = (JSONObject) new JSONParser().parse(mensage);
-                email = json.get("e-mail").toString();
+                email = json.get("email").toString();
                 password = json.get("password").toString();
                 
                 usuario = usuarios.login(email, password);
-//                DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-//                if (usuario != null){
-//                    dos.writeBoolean(true);
-//                }else{
-//                    dos.writeBoolean(false);
-//                }
+                DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
                 if (usuario != null){
-                    System.out.println(usuario.getAll());
+                    dos.writeUTF(usuario.toJsonString());
                 }else{
-                    System.out.println("usuarios vacio");
+                    dos.writeUTF("");
+                }
+                if (usuario != null){
+                    System.out.println(usuario.toJsonString());
+                }else{
+                    System.out.println("Intento de inicio de session incorrecto");
                 }
                 
                 socket.close();

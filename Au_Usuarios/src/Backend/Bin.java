@@ -74,10 +74,11 @@ public class Bin {
             // crear un iterador de de usuarios
             Iterator<Usuario> iterator = usuarios.iterator();
             
+            EncryptAndDecrypt ead = new EncryptAndDecrypt();
             // mientras exista algun usuario
             while(iterator.hasNext()){
                 //escribe el usuario en el documento "archivo.bin"
-                EncryptAndDecrypt ead = new EncryptAndDecrypt();
+  
                 Usuario u = iterator.next();
                 String password = u.getPassword();
                 u.setPassword(ead.encrypt(password, token));
@@ -112,12 +113,14 @@ public class Bin {
             //leer el primer usuario
             Usuario u = (Usuario) ois.readObject();
             //mientras el usuario no sea nulo
+            
+            EncryptAndDecrypt ead = new EncryptAndDecrypt();
             while (u != null) {
                 //System.out.println(u.getAll());
                 //añadimos el usuario a la classe usuarios.
                 try{
                     
-                    EncryptAndDecrypt ead = new EncryptAndDecrypt();
+                    
 
                     String password = u.getPassword();
                     u.setPassword(ead.decrypt(password, token));

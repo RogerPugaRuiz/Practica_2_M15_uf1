@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.logging.Logger;
+import org.json.simple.JSONObject;
 
 /**
  * Usuario con nombre, apellidos, email, password, fecha de creación y el rol
@@ -60,6 +61,15 @@ public class Usuario implements Serializable{
         this.email = email;
         this.password = password;
         this.rol = rol;
+        this.setLdt();
+    }
+    
+    public Usuario(Usuario u){
+        this.nombre = upperCaseFirst(u.getNombre());
+        this.apellidos = upperCaseFirst(u.getApellidos());
+        this.email = u.getEmail();
+        this.password = u.getPassword();
+        this.rol = Integer.parseInt(u.getRol());
         this.setLdt();
     }
     
@@ -221,6 +231,8 @@ public class Usuario implements Serializable{
                 return this.getEmail();
             case "rol":
                 return this.getRol();
+            case "password":
+                return this.getPassword();
             default:
                 return "";
         }
@@ -250,6 +262,17 @@ public class Usuario implements Serializable{
     @Override
     public String toString() {
         return "{" + "nombre : " + nombre + ", apellidos : " + apellidos + ", email : " + email + ", password : " + password + ", ldt : " + ldt + ", rol : " + rol + '}';
+    }
+    
+    public String toJsonString(){
+        JSONObject obj = new JSONObject();
+        obj.put("nombre", nombre);
+        obj.put("apellidos", apellidos);
+        obj.put("email", email);
+        obj.put("password", password);
+        obj.put("rol", rol);
+        
+        return obj.toJSONString();
     }
     
 }

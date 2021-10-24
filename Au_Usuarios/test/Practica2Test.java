@@ -107,7 +107,7 @@ public class Practica2Test {
     @Test
     public void generateTokenTest(){
         EncryptAndDecrypt ead = new EncryptAndDecrypt();
-        assertTrue("todo correcto", ead.getKey().length() == 100);
+        assertTrue("todo correcto", ead.getKey().length() == 50);
         
     }
     
