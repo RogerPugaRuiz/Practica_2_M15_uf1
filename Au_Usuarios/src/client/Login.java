@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -261,36 +259,12 @@ public class Login extends javax.swing.JFrame{
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void submit() {
-        try {
-            String email = jTextField_name.getText();
-            String password = jPasswordField.getText();
-            Socket socket= new Socket(ClientSocket.getIp(),ClientSocket.getPort());
-            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-            dos.writeUTF(email);
-            socket.close();
-            System.out.println(email);
-            
-//        Client client = new Client(){
-//            @Override
-//            void run() {
-//                try {
-//                    Client.setSocket();
-//                    DataOutputStream dos = new DataOutputStream(Client.getSocket().getOutputStream());
-//                    dos.writeUTF(email);
-//                    Client.getSocket().close();
-//                    System.out.println(email + "\n" + password);
-//                } catch (IOException ex) {
-//                    System.out.println(ex.getMessage());
-//                }
-//            }
-//            
-//        };
-//        
-//        client.run();
-        } catch (IOException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String email = jTextField_name.getText();
+        String password = jPasswordField.getText();
         
+        LoginClient loginClient = new LoginClient(email,password);
+        Thread thread = new Thread(loginClient);
+        thread.start();
     }
 
 
@@ -334,11 +308,14 @@ public class Login extends javax.swing.JFrame{
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         HostClientConfiguration hcc = new HostClientConfiguration();
         hcc.setVisible(true);
+        hcc.getJTextField1().setText(ClientSocket.getIp());
+        hcc.getJTextField2().setText(Integer.toString(ClientSocket.getPort()));
+        hcc.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        jTextPane1.setText(ClientSocket.getIp());
-        jTextPane2.setText(Integer.toString(ClientSocket.getPort()));
+        ClientSocket.setIp("192.0.0.1");
+        ClientSocket.setPort(8888);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
@@ -374,8 +351,9 @@ public class Login extends javax.swing.JFrame{
                 Login login = new Login();
                 login.setVisible(true);
                 
-                login.jTextPane1.setText(ClientSocket.getIp());
-                login.jTextPane2.setText(Integer.toString(ClientSocket.getPort())); 
+                ShowHost showTask = new ShowHost(login.jTextPane1, login.jTextPane2);
+                Timer timer = new Timer();
+                timer.schedule(showTask, 0,1000);
             }
         });
     }

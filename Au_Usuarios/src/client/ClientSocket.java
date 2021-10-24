@@ -14,8 +14,8 @@ import java.util.logging.Logger;
  * @author roger
  */
 public class ClientSocket{
-    private static String ip;
-    private static int port;
+    private static String ip = "192.0.0.1";
+    private static int port = 8888;
 
     public static String getIp() {
         return ip;
