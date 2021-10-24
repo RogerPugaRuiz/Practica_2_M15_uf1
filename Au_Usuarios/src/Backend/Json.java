@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package login_logout;
+package Backend;
 
 import Encryption.EncryptAndDecrypt;
 import java.io.FileNotFoundException;

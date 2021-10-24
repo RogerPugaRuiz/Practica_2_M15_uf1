@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package login_logout;
+package Backend;
 
 import Encryption.EncryptAndDecrypt;
 import java.io.FileInputStream;
@@ -12,14 +12,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
+import Backend.Exception.UserAlreadyExistException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Iterator;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import login_logout.Exception.UserAlreadyExistException;
 
 
 /**
@@ -101,6 +100,7 @@ public class Bin {
     /**
      * Metodo para leer del archivo bin y crear los usuarios
      * @param usuarios 
+     * @param token 
      */
     public void read(Usuarios usuarios,String token) {
         try {
@@ -130,8 +130,8 @@ public class Bin {
                     System.out.println(ex.getMessage());
                 } catch (NullPointerException ex) {
                     System.out.println("Token invalido");
-                } catch (Exception ex) {
-                    System.out.println("Error inesperado relacionado con archivo.bin");
+                } catch (InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException ex) {
+                    System.out.println(ex.getMessage());
                 }
                 u = (Usuario) ois.readObject();
             }

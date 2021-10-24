@@ -15,6 +15,7 @@ import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
@@ -262,9 +263,15 @@ public class Login extends javax.swing.JFrame{
         String email = jTextField_name.getText();
         String password = jPasswordField.getText();
         
-        LoginClient loginClient = new LoginClient(email,password);
-        Thread thread = new Thread(loginClient);
-        thread.start();
+        if (email.equals("") || password.equals("")){
+            JOptionPane.showMessageDialog(rootPane, "E-mail o crontraseña vacia.");
+        }else{
+            LoginClient loginClient = new LoginClient(email,password);
+            loginClient.setRoot(this);
+            Thread thread = new Thread(loginClient);
+            thread.start();   
+        }
+        
     }
 
 

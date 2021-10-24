@@ -1,16 +1,16 @@
 /*
  * github repository:  https://github.com/RogerPugaRuiz/Au_Usuarios.git
  */
-package login_logout;
+package Backend;
 
 import Encryption.EncryptAndDecrypt;
 import PrivateToken.PrivateToken;
 import java.util.Random;
 import java.util.Scanner;
-import login_logout.Exception.LoginException;
-import login_logout.Exception.NameLastNameException;
-import login_logout.Exception.UserAlreadyExistException;
-import static login_logout.Menus.*;
+import Backend.Exception.LoginException;
+import Backend.Exception.NameLastNameException;
+import Backend.Exception.UserAlreadyExistException;
+import static Backend.Menus.*;
 
 
 /**
@@ -35,15 +35,14 @@ public class AutenticacionUsuarios{
         "Intenta con algo diferente como un numero",
         "Lo siento pero esto esta fuera de mi programacion"};
     
-    private static String token; 
     /**
      * Metodo principal.
      * @param args 
      */
     public static void main(String[] args) {
         PrivateToken pt = new PrivateToken();
-        token = pt.getToken();
-        if (!run()) {
+        AutenticacionUsuarios au = new AutenticacionUsuarios();
+        if (!au.run()) {
             System.out.println("Imposible ejecutar el programa");
         }
     }
@@ -53,7 +52,7 @@ public class AutenticacionUsuarios{
      *
      * @return Si el metodo run funciona con normalidad
      */
-    public static boolean run() {
+    public boolean run() {
         try {
             // cargar los datos guardados en los archivos bin y json.
             // create a phrase for crypting
@@ -87,7 +86,8 @@ public class AutenticacionUsuarios{
   
         // leer los usuarios guardado en archivo.bin y crearlos.
         Bin bin = new Bin();
-        bin.read(usuarios,AutenticacionUsuarios.token);
+        PrivateToken pt = new PrivateToken();
+        bin.read(usuarios,pt.getToken());
 
 
         // importar archivos json de Usuarios.json
@@ -96,7 +96,7 @@ public class AutenticacionUsuarios{
 
         // guardar los nuevos jugadores en archivo.bin
 
-        bin.addList(usuarios,AutenticacionUsuarios.token);
+        bin.addList(usuarios,pt.getToken());
         
         
     }
@@ -209,7 +209,7 @@ public class AutenticacionUsuarios{
      * Metodo que valida el login
      * @param email
      * @param password 
-     * @throws login_logout.Exception.LoginException 
+     * @throws Backend.Exception.LoginException 
      */
     public static void login(String email, String password) throws LoginException{
         try {
@@ -582,7 +582,8 @@ public class AutenticacionUsuarios{
     public static void forceExit() {
         // guardar los usuarios en archivos.bin y cerrar la aplicación
         Bin bin = new Bin();
-        bin.addList(usuarios,AutenticacionUsuarios.token);
+        PrivateToken pt = new PrivateToken();
+        bin.addList(usuarios,pt.getToken());
         System.exit(0);
     }
 

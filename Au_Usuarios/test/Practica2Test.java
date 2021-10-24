@@ -19,9 +19,9 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 
-import login_logout.Exception.UserAlreadyExistException;
-import login_logout.Usuario;
-import login_logout.Usuarios;
+import Backend.Exception.UserAlreadyExistException;
+import Backend.Usuario;
+import Backend.Usuarios;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -116,6 +116,7 @@ public class Practica2Test {
         PrivateToken pt = new PrivateToken();
         String key = pt.getToken();
         String repeatKey = pt.getToken();
+        System.out.println(pt.getToken());
         assertTrue("correcto",key.equals(repeatKey));
     }
 
