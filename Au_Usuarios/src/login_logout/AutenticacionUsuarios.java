@@ -35,14 +35,13 @@ public class AutenticacionUsuarios{
         "Intenta con algo diferente como un numero",
         "Lo siento pero esto esta fuera de mi programacion"};
     
-    private static String token; 
     /**
      * Metodo principal.
      * @param args 
      */
     public static void main(String[] args) {
-        PrivateToken pt = new PrivateToken();
-        token = pt.getToken();
+        
+        
         if (!run()) {
             System.out.println("Imposible ejecutar el programa");
         }
@@ -87,7 +86,8 @@ public class AutenticacionUsuarios{
   
         // leer los usuarios guardado en archivo.bin y crearlos.
         Bin bin = new Bin();
-        bin.read(usuarios,AutenticacionUsuarios.token);
+        PrivateToken pt = new PrivateToken();
+        bin.read(usuarios,pt.getToken());
 
 
         // importar archivos json de Usuarios.json
@@ -96,7 +96,7 @@ public class AutenticacionUsuarios{
 
         // guardar los nuevos jugadores en archivo.bin
 
-        bin.addList(usuarios,AutenticacionUsuarios.token);
+        bin.addList(usuarios,pt.getToken());
         
         
     }
@@ -133,8 +133,9 @@ public class AutenticacionUsuarios{
      */
     public static int exit() {
         Bin bin = new Bin();
+        PrivateToken pt = new PrivateToken();
         try{
-            bin.addList(usuarios,"hola");
+            bin.addList(usuarios,pt.getToken());
         }catch(Exception ex){
             System.out.println("Error al intentar salir, es posible que no se guarden todos los archivos");
         }
@@ -582,7 +583,8 @@ public class AutenticacionUsuarios{
     public static void forceExit() {
         // guardar los usuarios en archivos.bin y cerrar la aplicación
         Bin bin = new Bin();
-        bin.addList(usuarios,AutenticacionUsuarios.token);
+        PrivateToken pt = new PrivateToken();
+        bin.addList(usuarios,pt.getToken());
         System.exit(0);
     }
 
