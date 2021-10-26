@@ -11,8 +11,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -52,19 +50,23 @@ public class EncryptAndDecrypt {
             listByte = Arrays.copyOf(listByte, 16);
             SecretKeySpec secretKeySpec = new SecretKeySpec(listByte, "AES");
             return secretKeySpec;
-        } catch (UnsupportedEncodingException ex) {
-            return null;
-        } catch (NoSuchAlgorithmException ex) {
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
             return null;
         }
     }
 
     /**
-     * Method that encrypt using the AES algorithm.
+     * Method to encrypt using the AES algorithm.
      *
      * @param content // content that will encrypting
      * @param key // key for encrypt and decrypt
      * @return String encryption
+     * @throws java.security.NoSuchAlgorithmException
+     * @throws javax.crypto.NoSuchPaddingException
+     * @throws java.security.InvalidKeyException
+     * @throws java.io.UnsupportedEncodingException
+     * @throws javax.crypto.IllegalBlockSizeException
+     * @throws javax.crypto.BadPaddingException
      */
     public String encrypt(String content, String key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException {
 
@@ -79,6 +81,17 @@ public class EncryptAndDecrypt {
         return encryption;
     }
 
+    /**
+     * Method to decrypt using the AES algorithm
+     * @param encrypt
+     * @param key
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws NoSuchPaddingException
+     * @throws InvalidKeyException
+     * @throws IllegalBlockSizeException
+     * @throws BadPaddingException 
+     */
     public String decrypt(String encrypt, String key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 
         SecretKeySpec sks = createKey(key);
