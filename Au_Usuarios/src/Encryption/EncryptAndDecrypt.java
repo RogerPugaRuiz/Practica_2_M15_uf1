@@ -60,11 +60,17 @@ public class EncryptAndDecrypt {
     }
 
     /**
-     * Method that encrypt using the AES algorithm.
+     * Method to encrypt using the AES algorithm.
      *
      * @param content // content that will encrypting
      * @param key // key for encrypt and decrypt
      * @return String encryption
+     * @throws java.security.NoSuchAlgorithmException
+     * @throws javax.crypto.NoSuchPaddingException
+     * @throws java.security.InvalidKeyException
+     * @throws java.io.UnsupportedEncodingException
+     * @throws javax.crypto.IllegalBlockSizeException
+     * @throws javax.crypto.BadPaddingException
      */
     public String encrypt(String content, String key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException {
 
@@ -78,7 +84,18 @@ public class EncryptAndDecrypt {
         String encryption = Base64.getEncoder().encodeToString(bytes_encryption);
         return encryption;
     }
-
+    
+    /**
+     * Method to decrypt using the AES algorithm
+     * @param encrypt
+     * @param key
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws NoSuchPaddingException
+     * @throws InvalidKeyException
+     * @throws IllegalBlockSizeException
+     * @throws BadPaddingException 
+     */
     public String decrypt(String encrypt, String key) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 
         SecretKeySpec sks = createKey(key);
