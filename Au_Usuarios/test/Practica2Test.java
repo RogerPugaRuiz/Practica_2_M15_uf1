@@ -76,6 +76,23 @@ public class Practica2Test {
             System.out.println(ex.getMessage());
         }
     }
+    @Test
+    public void loginFailTest(){
+                try {
+            Usuarios users = new Usuarios();
+            final Usuario EXPECTED_USER = new Usuario(
+                    "Roger",
+                    "Puga",
+                    "roger@gmail.com",
+                    "1234", Usuario.USER);
+            users.add(EXPECTED_USER);
+            Usuario user_login = users.login("roger@gmail.com", "123");
+            Boolean condition = user_login == null;
+            assertTrue("Login Correcto",condition);
+        } catch (UserAlreadyExistException ex) {
+            
+        }
+    }
 
 
     @Test
@@ -101,6 +118,22 @@ public class Practica2Test {
             Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
         } catch (BadPaddingException ex) {
             Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Test
+    public void encryptFailTest(){
+                try {
+            String key = "holalskdjflksjdflksjdlfkjsdkjf";
+            String expected = "hola mundo";
+            EncryptAndDecrypt ead = new EncryptAndDecrypt();
+            String encrypt = ead.encrypt(expected, "holalskdjflksjdflksjdlf");
+            String decrypt = ead.decrypt(encrypt, key);
+            
+            assertFalse("encrypt correct", expected.equals(decrypt));
+            System.out.println(decrypt);
+        } catch (Exception ex){
+            
         }
     }
     
