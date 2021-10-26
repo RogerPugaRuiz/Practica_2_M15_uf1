@@ -42,6 +42,7 @@ public class PrivateToken {
                 EncryptAndDecrypt ead = new EncryptAndDecrypt();
                 String key = ead.getKey();
                 fos.write(key.getBytes("UTF-8"));
+                file.setReadOnly();
                 return key;
             } catch (IOException ex1) {
                 return null;
