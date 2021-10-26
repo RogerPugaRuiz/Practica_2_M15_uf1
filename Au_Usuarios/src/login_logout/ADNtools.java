@@ -10,5 +10,11 @@ package login_logout;
  * @author albertcasany
  */
 public class ADNtools {
-    
+    public String reversed(String adn){
+        StringBuilder sb = new StringBuilder();
+        for (int i = adn.length(); i >= 0; i--){
+            sb.append(adn.charAt(i));
+        }
+        return sb.toString();
+    }
 }
