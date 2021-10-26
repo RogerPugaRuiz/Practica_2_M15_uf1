@@ -17,6 +17,8 @@ import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import login_logout.ADNtools;
+import login_logout.Exception.ReversedAdnException;
 
 
 import login_logout.Exception.UserAlreadyExistException;
@@ -72,8 +74,8 @@ public class Practica2Test {
             Usuario user_login = users.login("roger@gmail.com", "1234");
             Boolean condition = user_login.equals(EXPECTED_USER);
             assertTrue("Login Correcto",condition);
-        } catch (UserAlreadyExistException ex) {
-            System.out.println(ex.getMessage());
+        } catch (Exception ex) {
+            fail(ex.getMessage());
         }
     }
     @Test
@@ -89,8 +91,8 @@ public class Practica2Test {
             Usuario user_login = users.login("roger@gmail.com", "123");
             Boolean condition = user_login == null;
             assertTrue("Login Correcto",condition);
-        } catch (UserAlreadyExistException ex) {
-            
+        } catch (Exception ex) {
+            fail(ex.getMessage());
         }
     }
 
@@ -106,18 +108,8 @@ public class Practica2Test {
             
             assertTrue("encrypt correct", expected.equals(decrypt));
             System.out.println(decrypt);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchPaddingException ex) {
-            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidKeyException ex) {
-            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
-            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            fail(ex.getMessage());
         }
     }
     
@@ -132,8 +124,8 @@ public class Practica2Test {
             
             assertFalse("encrypt correct", expected.equals(decrypt));
             System.out.println(decrypt);
-        } catch (Exception ex){
-            
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
     }
     
@@ -150,6 +142,20 @@ public class Practica2Test {
         String key = pt.getToken();
         String repeatKey = pt.getToken();
         assertTrue("correcto",key.equals(repeatKey));
+    }
+    
+    @Test
+    public void ReversedAdnTest() {
+        try {
+            ADNtools tools = new ADNtools();
+            String adn = "agcc";
+            String expectedAdn = "ccga";
+            String new_adn = tools.reversed(adn);
+            assertTrue("Correcto",expectedAdn.equals(new_adn));
+
+        } catch (ReversedAdnException ex) {
+            fail(ex.getMessage());
+        }
     }
 
 }
