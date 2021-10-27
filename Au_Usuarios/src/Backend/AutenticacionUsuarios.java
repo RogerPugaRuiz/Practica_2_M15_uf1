@@ -1,15 +1,15 @@
 /*
  * github repository:  https://github.com/RogerPugaRuiz/Au_Usuarios.git
  */
-package login_logout;
+package Backend;
 
 import PrivateToken.PrivateToken;
 import java.util.Random;
 import java.util.Scanner;
-import login_logout.Exception.LoginException;
-import login_logout.Exception.NameLastNameException;
-import login_logout.Exception.UserAlreadyExistException;
-import static login_logout.Menus.*;
+import Backend.Exception.LoginException;
+import Backend.Exception.NameLastNameException;
+import Backend.Exception.UserAlreadyExistException;
+import static Backend.Menus.*;
 
 /**
  * Classe con un showLogin de usuario y funciones de administrador de usuarios.
@@ -40,8 +40,9 @@ public class AutenticacionUsuarios {
      * @param args
      */
     public static void main(String[] args) {
-
-        if (!run()) {
+        PrivateToken pt = new PrivateToken();
+        AutenticacionUsuarios au = new AutenticacionUsuarios();
+        if (!au.run()) {
             System.out.println("Imposible ejecutar el programa");
         }
     }
@@ -51,7 +52,7 @@ public class AutenticacionUsuarios {
      *
      * @return Si el metodo run funciona con normalidad
      */
-    public static boolean run() {
+    public boolean run() {
         try {
             // cargar los datos guardados en los archivos bin y json.
             // create a phrase for crypting
@@ -202,8 +203,13 @@ public class AutenticacionUsuarios {
      * Metodo que valida el login
      *
      * @param email
+<<<<<<< HEAD:Au_Usuarios/src/Backend/AutenticacionUsuarios.java
+     * @param password 
+     * @throws Backend.Exception.LoginException 
+=======
      * @param password
      * @throws login_logout.Exception.LoginException
+>>>>>>> main:Au_Usuarios/src/login_logout/AutenticacionUsuarios.java
      */
     public static void login(String email, String password) throws LoginException {
         try {

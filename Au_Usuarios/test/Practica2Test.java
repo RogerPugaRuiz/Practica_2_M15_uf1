@@ -9,10 +9,11 @@
 
 import Encryption.EncryptAndDecrypt;
 import PrivateToken.PrivateToken;
+
+import Backend.Usuario;
+import Backend.Usuarios;
 import login_logout.DNATools;
 import login_logout.Exception.InvalidDNAException;
-import login_logout.Usuario;
-import login_logout.Usuarios;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -121,7 +122,7 @@ public class Practica2Test {
     @Test
     public void generateTokenTest(){
         EncryptAndDecrypt ead = new EncryptAndDecrypt();
-        assertTrue("todo correcto", ead.getKey().length() == 100);
+        assertTrue("todo correcto", ead.getKey().length() == 50);
         
     }
     
@@ -130,6 +131,7 @@ public class Practica2Test {
         PrivateToken pt = new PrivateToken();
         String key = pt.getToken();
         String repeatKey = pt.getToken();
+        System.out.println(pt.getToken());
         assertTrue("correcto",key.equals(repeatKey));
     }
     

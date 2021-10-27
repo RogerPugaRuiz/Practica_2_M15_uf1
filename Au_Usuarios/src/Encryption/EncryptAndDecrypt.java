@@ -11,8 +11,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -28,7 +26,7 @@ public class EncryptAndDecrypt {
     public String getKey() {
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
-        int targetStringLength = 100;
+        int targetStringLength = 50;
         Random random = new Random();
         StringBuilder buffer = new StringBuilder(targetStringLength);
         for (int i = 0; i < targetStringLength; i++) {
@@ -52,9 +50,7 @@ public class EncryptAndDecrypt {
             listByte = Arrays.copyOf(listByte, 16);
             SecretKeySpec secretKeySpec = new SecretKeySpec(listByte, "AES");
             return secretKeySpec;
-        } catch (UnsupportedEncodingException ex) {
-            return null;
-        } catch (NoSuchAlgorithmException ex) {
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
             return null;
         }
     }
@@ -84,7 +80,7 @@ public class EncryptAndDecrypt {
         String encryption = Base64.getEncoder().encodeToString(bytes_encryption);
         return encryption;
     }
-    
+
     /**
      * Method to decrypt using the AES algorithm
      * @param encrypt
