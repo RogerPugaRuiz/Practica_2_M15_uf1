@@ -16,22 +16,19 @@ import login_logout.Exception.UserAlreadyExistException;
 import static Main.Menus.*;
 
 /**
- * Classe con un showLogin de usuario y funciones de administrador de usuarios.
+ * Main class.
  *
  * @author roger
  */
-public class AutenticacionUsuarios {
+public class Main {
 
     /**
-     * Conjunto de usuarios.
+     * Users Array.
      */
     public static Usuarios usuarios = new Usuarios();
 
     /**
-     * nombre del archivo json.
-     */
-    /**
-     * Posibles mensajes de error.
+     * All errors
      */
     public static final String[] ERRORCOMPRENSION = {
         "No te entiendo, puedes repetir que opcion prefieres",
@@ -39,7 +36,7 @@ public class AutenticacionUsuarios {
         "Lo siento pero esto esta fuera de mi programacion"};
 
     /**
-     * Metodo principal.
+     * Main method.
      *
      * @param args
      */
@@ -51,14 +48,13 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo principal de ejecución del programa
+     * Method to run the program
      *
-     * @return Si el metodo run funciona con normalidad
+     * @return true if the program no has problems
      */
     public static boolean run() {
         try {
-            // cargar los datos guardados en los archivos bin y json.
-            // create a phrase for crypting
+            // load a date with json and bin file
             loadData();
 
             int option = 0;
@@ -69,7 +65,7 @@ public class AutenticacionUsuarios {
                         option = exit();
                         break;
                     case 1: // login
-                        showLogin();
+                        inputLogin();
                         break;
                 }
             } while (option != 0);
@@ -81,16 +77,16 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Cargar los archivos json y bin.
+     * Method to load the data.
      */
     public static void loadData() {
 
-        // leer los usuarios guardado en archivo.bin y crearlos.
+        // read the users in the bin file and put in "usuarios" class
         Bin bin = new Bin();
         PrivateToken pt = new PrivateToken();
         bin.read(usuarios, pt.getToken());
 
-        // importar archivos json de Usuarios.json
+        // Method to import with json
         jsonImport();
 
         // guardar los nuevos jugadores en archivo.bin
@@ -99,19 +95,19 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para leer y crear Usuario del archivo Usuarios.json.
+     * Method to read a json and import users.
      */
     public static void jsonImport() {
-        // importar archivos json de Usuarios.json
 
         Scanner sc = new Scanner(System.in);
         System.out.println("¿Quieres importar usuarios de un archivo Json?(Si/No)");
         char s = sc.next().charAt(0);
-        if (s == 'S' || s == 's') {
+        if (s == 'S' || s == 's') { // if you want to import new json users
             System.out.println("Nombre del archivo json(*No escriba la extension json*)");
             String jsonFile = sc.next() + ".json";
-            try {
+            try { // if json exist
                 Json json = new Json();
+                // add all json users to "usuarios"
                 usuarios.addAll(json.jsonImport(jsonFile));
                 System.out.printf("Usuarios importados de %s\n", jsonFile);
             } catch (NullPointerException ex) {
@@ -122,15 +118,16 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para salir de la aplicación final
+     * Method to loop exit
      *
      * @param bin Classe bin para gestionar los archivos binarios
-     * @return si salir o no de la aplicación final
+     * @return int 0, loop breaks when option is 0
      */
     public static int exit() {
+        // save current status of Users
         Bin bin = new Bin();
         PrivateToken pt = new PrivateToken();
-        try {
+        try { // try save
             bin.addList(usuarios, pt.getToken());
         } catch (Exception ex) {
             System.out.println("Error al intentar salir, es posible que no se guarden todos los archivos");
@@ -139,8 +136,9 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para leer el menu principal del showLogin
+     * Method to read a menu
      *
+     * @param MENU //text
      * @return La opcion del usuario
      */
     public static int showMenu(String[] MENU) {
@@ -151,9 +149,9 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para escanear por pantalla una opcion
+     * Method to scan a new option
      *
-     * @return la opcion y -1 si no es un numero.
+     * @return int option
      */
     public static int scan() {
         //        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -170,24 +168,19 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para dar formato al menu
+     * Format menu method.
      *
-     * @param i el numero que representa la opcion
-     * @param menu el texto de la opcion
+     * @param i index list
+     * @param menu option text
      */
     public static void menuFormat(int i, String menu) {
         System.out.printf("%d. %s\n", i, menu);
     }
 
     /**
-     * Metodo para leer el menu del usuario normal
-     *
-     * @return La opcion del usuario
+     * Method to get the e-mail, and password.
      */
-    /**
-     * Metodo en el que se pide el e-mail y la contraseña del usuario.
-     */
-    public static void showLogin() {
+    public static void inputLogin() {
         try {
             final Scanner SCANNER = new Scanner(System.in);
             System.out.print("e-mail: ");
@@ -203,11 +196,11 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo que valida el login
+     * Method to validate if it's a correct user
      *
      * @param email
      * @param password
-     * @throws login_logout.Exception.LoginException
+     * @throws LoginException not possible login
      */
     public static void login(String email, String password) throws LoginException {
         try {
@@ -229,14 +222,12 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para gestionar las funciones del admin - Como ver la informacion
-     * de su session - Funciones CRUD (create, read, update, and delete); -
-     * Salir de la session - Cerrar la aplicacion
+     * Method to administrate the admin session.
      *
-     * @param loginUser
+     * @param loginUser if he is an admin or simply a user
      */
     public static void admin(Usuario loginUser) {
-        int option = 0;
+        int option;
         do {
             option = showMenu(MENUADMIN);
             switch (option) {
@@ -264,7 +255,94 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para exportar json con el nombre del archivo que elija el usuario.
+     * Method to administrate the user session.
+     *
+     * @param loginUser if he is an admin or simply a user
+     */
+    public static void user(Usuario loginUser) {
+        int option = 0;
+        do {
+            option = showMenu(MENUUSER);
+            switch (option) {
+                case 0: // exit
+                    forceExit();
+                    break;
+                case 1: // show info
+                    System.out.println(loginUser.getAll());
+                    break;
+                case 2: // logout
+                    option = exit();
+                    break;
+                case 3: // DNATools
+                    DNATools();
+            }
+        } while (option != 0);
+    }
+    
+    /**
+     * Method to use a DNAtools class.
+     */
+    public static void DNATools() {
+        int option;
+        do {
+            option = showMenu(MENUADN);
+            switch (option) {
+                case 0:
+                    option = exit();
+                case 1:
+                    option = reversedDNA();
+                    break;
+                case 2:
+                    option = mostRepeatedBase();
+                    break;
+                case 3:
+                    option = leastRepeatedBase();
+                    break;
+                case 4:
+                    option = showBases();
+                    break;
+                case 5:
+                    option = dnaToRna();
+                    break;
+                case 6:
+                    option = rnaToDna();
+                    break;
+            }
+        } while (option != 0);
+    }
+    
+    
+    // ============================== USER MEHTODS =====================================
+    
+    private static int reversedDNA() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static int mostRepeatedBase() {
+
+        return 0;
+    }
+
+    private static int leastRepeatedBase() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static int showBases() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static int dnaToRna() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static int rnaToDna() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    // ============================== ADMIN METHODS ====================================
+
+    /**
+     * Method to export encrypt json
      */
     public static void jsonExport() {
         final Scanner SCANNER = new Scanner(System.in);
@@ -274,7 +352,7 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para controlar las opciones de C.R.U.D de los usuarios.
+     * Method to control de crud options
      */
     public static void crud() {
         int option;
@@ -308,7 +386,7 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para actualizar elementos de los Usuarios.
+     * Method to control the update options.
      */
     public static void update() {
         int option;
@@ -336,7 +414,7 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para actualizar el nombre de diferentes usuarios.
+     * Method to update the name.
      */
     public static void updateName() {
         final Scanner SC = new Scanner(System.in);
@@ -351,7 +429,7 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para actualizar el apellido de diferentes usuarios.
+     * Method to update the last name.
      */
     public static void updateLastname() {
         final Scanner SC = new Scanner(System.in);
@@ -366,7 +444,7 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para actualizar la contraseña de diferentes usuarios.
+     * Method to update the password.
      */
     public static void updatePassword() {
         final Scanner SC = new Scanner(System.in);
@@ -381,7 +459,7 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para actualizar el rol de diferentes usuarios.
+     * Method to update de role.
      */
     public static void updateRol() {
         final Scanner SC = new Scanner(System.in);
@@ -400,7 +478,7 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para eliminar usuario.
+     * Method to delete user.
      */
     public static void delete() {
         final Scanner SCANNER = new Scanner(System.in);
@@ -428,7 +506,7 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para leer los usuarios segun algunos parametros.
+     * Method to read.
      */
     public static void read() {
         final Scanner SCANNER = new Scanner(System.in);
@@ -477,7 +555,7 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para crear un usuario.
+     * Method to create.
      */
     public static void create() throws NameLastNameException {
         final Scanner SCANNER = new Scanner(System.in);
@@ -522,57 +600,7 @@ public class AutenticacionUsuarios {
     }
 
     /**
-     * Metodo para gestionar las funciones del usuario - Como ver la informacion
-     * de su session - Salir de la session - Cerrar la aplicacion
-     *
-     * @param loginUser
-     */
-    public static void user(Usuario loginUser) {
-        int option = 0;
-        do {
-            option = showMenu(MENUUSER);
-            switch (option) {
-                case 0: // exit
-                    forceExit();
-                    break;
-                case 1: // show info
-                    System.out.println(loginUser.getAll());
-                    break;
-                case 2: // logout
-                    option = exit();
-                    break;
-                case 3:
-                    option = showMenu(MENUADN);
-                    int opADN = 0;
-                    switch (opADN) {
-                        case 0:
-                            opADN = exit();
-                        case 1:
-                            opADN = darVueltaCadenaADN();
-                            break;
-                        case 2:
-                            opADN = baseMasRepetida();
-                            break;
-                        case 3:
-                            opADN = baseMenosRepetida();
-                            break;
-                        case 4:
-                            opADN = mostrarBases();
-                            break;
-                        case 5:
-                            opADN = convertADNtoARN();
-                            break;
-                        case 6:
-                            opADN = convertARNtoADN();
-                            break;
-                    }
-
-            }
-        } while (option != 0);
-    }
-
-    /**
-     * Metodo para forzar la salida del programa.
+     * Method to force exit, the program die.
      */
     public static void forceExit() {
         // guardar los usuarios en archivos.bin y cerrar la aplicación
@@ -582,6 +610,11 @@ public class AutenticacionUsuarios {
         System.exit(0);
     }
 
+    /**
+     * Method to check if str contain a number
+     * @param str
+     * @return boolean true if contain numbers else false 
+     */
     private static boolean containNumbers(String str) {
         return str.contains("1")
                 || str.contains("2")
@@ -593,30 +626,5 @@ public class AutenticacionUsuarios {
                 || str.contains("8")
                 || str.contains("9")
                 || str.contains("0");
-    }
-
-    private static int darVueltaCadenaADN() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private static int baseMasRepetida() {
-        
-        return 0;
-    }
-
-    private static int baseMenosRepetida() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private static int mostrarBases() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private static int convertADNtoARN() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private static int convertARNtoADN() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

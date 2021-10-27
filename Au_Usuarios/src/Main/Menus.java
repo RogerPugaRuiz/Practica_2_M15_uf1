@@ -11,6 +11,30 @@ package Main;
  */
 public class Menus {
     
+    
+    // ======================= MAIN =======================
+
+    /**
+     * String array for main options.
+     */
+    public static final String[] MENU = {
+        "EXIT",
+        "LOGIN"};
+        
+    // ======================= USERS =======================
+    
+    /**
+     * Strings array for user options.
+     */
+    public static final String[] MENUUSER = {
+        "EXIT",
+        "INFO. USER",
+        "LOGOUT",
+        "MANAGE ARRAYS ADN/ARN"};
+    
+    /**
+     *  Strings array for DNA tools options.
+     */
     public static final String[] MENUADN = {
         "Exit",
         "Donar la volta a una cadena de ADN ",
@@ -21,24 +45,10 @@ public class Menus {
         "Convertir ARN a ADN"};
     
     
-    /**
-     * Menu principal.
-     */
-    public static final String[] MENU = {
-        "EXIT",
-        "LOGIN"};
+    // ======================= ADMINS =======================
     
     /**
-     * Menu del usuario.
-     */
-    public static final String[] MENUUSER = {
-        "EXIT",
-        "INFO. USER",
-        "LOGOUT",
-        "MANAGE ARRAYS ADN/ARN"};
-    
-    /**
-     * Menu del administrador.
+     * Strings array for admin options.
      */
     public static final String[] MENUADMIN = {
         "EXIT",
@@ -49,7 +59,7 @@ public class Menus {
         "LOGOUT"};
     
     /**
-     * Menu opciones CRUD.
+     * Strings array for admin CRUD options.
      */
     public static final String[] CRUD = {
         "EXIT",
@@ -59,7 +69,7 @@ public class Menus {
         "DELETE"};
     
     /**
-     * Menu de lectura.
+     * Strings array for admin read options.
      */
     public static final String[] READ = {
         "EXIT",
@@ -69,7 +79,7 @@ public class Menus {
         "SEARCH BY NAME AND LASTNAME"};
     
     /**
-     * Menu de los atributos de usuario.
+     * Strings array for attribute options.
      */
     public static final String[] ATTRIBUTES = {
         "EXIT",
