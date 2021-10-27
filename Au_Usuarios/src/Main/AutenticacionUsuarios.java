@@ -1,15 +1,19 @@
 /*
  * github repository:  https://github.com/RogerPugaRuiz/Au_Usuarios.git
  */
-package login_logout;
+package Main;
 
+import Users.Usuarios;
+import Users.Usuario;
+import PersistentData.Json;
+import PersistentData.Bin;
 import PrivateToken.PrivateToken;
 import java.util.Random;
 import java.util.Scanner;
 import login_logout.Exception.LoginException;
 import login_logout.Exception.NameLastNameException;
 import login_logout.Exception.UserAlreadyExistException;
-import static login_logout.Menus.*;
+import static Main.Menus.*;
 
 /**
  * Classe con un showLogin de usuario y funciones de administrador de usuarios.

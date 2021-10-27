@@ -9,10 +9,10 @@
 
 import Encryption.EncryptAndDecrypt;
 import PrivateToken.PrivateToken;
-import login_logout.DNATools;
+import DNATools.DNATools;
 import login_logout.Exception.InvalidDNAException;
-import login_logout.Usuario;
-import login_logout.Usuarios;
+import Users.Usuario;
+import Users.Usuarios;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package login_logout;
+package PersistentData;
 
 import Encryption.EncryptAndDecrypt;
 import java.io.FileInputStream;
@@ -20,6 +20,8 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import login_logout.Exception.UserAlreadyExistException;
+import Users.Usuario;
+import Users.Usuarios;
 
 
 /**
