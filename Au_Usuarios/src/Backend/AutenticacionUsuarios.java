@@ -3,7 +3,6 @@
  */
 package Backend;
 
-import Encryption.EncryptAndDecrypt;
 import PrivateToken.PrivateToken;
 import java.util.Random;
 import java.util.Scanner;
@@ -12,12 +11,13 @@ import Backend.Exception.NameLastNameException;
 import Backend.Exception.UserAlreadyExistException;
 import static Backend.Menus.*;
 
-
 /**
  * Classe con un showLogin de usuario y funciones de administrador de usuarios.
+ *
  * @author roger
  */
-public class AutenticacionUsuarios{
+public class AutenticacionUsuarios {
+
     /**
      * Conjunto de usuarios.
      */
@@ -26,7 +26,6 @@ public class AutenticacionUsuarios{
     /**
      * nombre del archivo json.
      */
-    
     /**
      * Posibles mensajes de error.
      */
@@ -34,10 +33,11 @@ public class AutenticacionUsuarios{
         "No te entiendo, puedes repetir que opcion prefieres",
         "Intenta con algo diferente como un numero",
         "Lo siento pero esto esta fuera de mi programacion"};
-    
+
     /**
      * Metodo principal.
-     * @param args 
+     *
+     * @param args
      */
     public static void main(String[] args) {
         PrivateToken pt = new PrivateToken();
@@ -71,8 +71,7 @@ public class AutenticacionUsuarios{
                 }
             } while (option != 0);
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
         return true;
@@ -81,47 +80,41 @@ public class AutenticacionUsuarios{
     /**
      * Cargar los archivos json y bin.
      */
-    public static void loadData(){
+    public static void loadData() {
 
-  
         // leer los usuarios guardado en archivo.bin y crearlos.
         Bin bin = new Bin();
         PrivateToken pt = new PrivateToken();
-        bin.read(usuarios,pt.getToken());
-
+        bin.read(usuarios, pt.getToken());
 
         // importar archivos json de Usuarios.json
-
         jsonImport();
 
         // guardar los nuevos jugadores en archivo.bin
+        bin.addList(usuarios, pt.getToken());
 
-        bin.addList(usuarios,pt.getToken());
-        
-        
     }
 
     /**
      * Metodo para leer y crear Usuario del archivo Usuarios.json.
      */
-    public static void jsonImport(){
+    public static void jsonImport() {
         // importar archivos json de Usuarios.json
 
-
-            Scanner sc = new Scanner(System.in);
-            System.out.println("¿Quieres importar usuarios de un archivo Json?(Si/No)");
-            char s = sc.next().charAt(0);
-            if (s == 'S' || s == 's'){
-                System.out.println("Nombre del archivo json(*No escriba la extension json*)");
-                String jsonFile = sc.next()+".json";
-                try{
-                    Json json = new Json();
-                    usuarios.addAll(json.jsonImport(jsonFile));
-                    System.out.printf("Usuarios importados de %s\n", jsonFile);
-                }catch(NullPointerException ex){
-                    System.out.printf("No existe el archivo %s\n", jsonFile);
-                }
+        Scanner sc = new Scanner(System.in);
+        System.out.println("¿Quieres importar usuarios de un archivo Json?(Si/No)");
+        char s = sc.next().charAt(0);
+        if (s == 'S' || s == 's') {
+            System.out.println("Nombre del archivo json(*No escriba la extension json*)");
+            String jsonFile = sc.next() + ".json";
+            try {
+                Json json = new Json();
+                usuarios.addAll(json.jsonImport(jsonFile));
+                System.out.printf("Usuarios importados de %s\n", jsonFile);
+            } catch (NullPointerException ex) {
+                System.out.printf("No existe el archivo %s\n", jsonFile);
             }
+        }
 
     }
 
@@ -134,9 +127,9 @@ public class AutenticacionUsuarios{
     public static int exit() {
         Bin bin = new Bin();
         PrivateToken pt = new PrivateToken();
-        try{
-            bin.addList(usuarios,pt.getToken());
-        }catch(Exception ex){
+        try {
+            bin.addList(usuarios, pt.getToken());
+        } catch (Exception ex) {
             System.out.println("Error al intentar salir, es posible que no se guarden todos los archivos");
         }
         return 0;
@@ -196,23 +189,29 @@ public class AutenticacionUsuarios{
             final Scanner SCANNER = new Scanner(System.in);
             System.out.print("e-mail: ");
             String email = SCANNER.next();
-            
+
             System.out.print("password: ");
             String password = SCANNER.next();
-            
+
             login(email, password);
         } catch (LoginException ex) {
             System.out.println(ex.getMessage());
         }
     }
-    
+
     /**
      * Metodo que valida el login
+     *
      * @param email
+<<<<<<< HEAD:Au_Usuarios/src/Backend/AutenticacionUsuarios.java
      * @param password 
      * @throws Backend.Exception.LoginException 
+=======
+     * @param password
+     * @throws login_logout.Exception.LoginException
+>>>>>>> main:Au_Usuarios/src/login_logout/AutenticacionUsuarios.java
      */
-    public static void login(String email, String password) throws LoginException{
+    public static void login(String email, String password) throws LoginException {
         try {
             Usuario loginUser = usuarios.login(email, password);
             System.out.println(loginUser.getAll());
@@ -256,7 +255,7 @@ public class AutenticacionUsuarios{
                     jsonExport();
                     break;
                 case 4: // import with json file
-                    
+
                     jsonImport();
                     break;
                 case 5: // logout
@@ -265,7 +264,7 @@ public class AutenticacionUsuarios{
             }
         } while (option != 0);
     }
-    
+
     /**
      * Metodo para exportar json con el nombre del archivo que elija el usuario.
      */
@@ -289,12 +288,12 @@ public class AutenticacionUsuarios{
                     break;
                 case 1: 
                     try {
-                        // create new User
-                        create();
-                    } catch (NameLastNameException ex) {
-                        System.out.println(ex.getMessage());
-                    }
-                    break;
+                    // create new User
+                    create();
+                } catch (NameLastNameException ex) {
+                    System.out.println(ex.getMessage());
+                }
+                break;
 
                 case 2: // read with diferents options
                     read();
@@ -309,14 +308,15 @@ public class AutenticacionUsuarios{
             }
         } while (option != 0);
     }
+
     /**
      * Metodo para actualizar elementos de los Usuarios.
      */
-    public static void update(){
+    public static void update() {
         int option;
-        do{
+        do {
             option = showMenu(ATTRIBUTES);
-            switch(option){
+            switch (option) {
                 case 0:
                     option = exit();
                     break;
@@ -333,100 +333,98 @@ public class AutenticacionUsuarios{
                     updateRol();
                     break;
             }
-            
-        }while(option != 0);
+
+        } while (option != 0);
     }
-    
+
     /**
      * Metodo para actualizar el nombre de diferentes usuarios.
      */
-    public static void updateName(){
-        final Scanner SC = new Scanner(System.in); 
+    public static void updateName() {
+        final Scanner SC = new Scanner(System.in);
         System.out.print("Nombre: ");
         String nombre = SC.next();
-        
+
         System.out.print("E-mail: ");
         String email = SC.next();
         Usuario u = usuarios.search(email);
-        
+
         u.setNombre(nombre);
     }
-    
-    
+
     /**
      * Metodo para actualizar el apellido de diferentes usuarios.
      */
-    public static void updateLastname(){
+    public static void updateLastname() {
         final Scanner SC = new Scanner(System.in);
         System.out.print("Apellidos: ");
         String lastname = SC.nextLine();
-        
+
         System.out.println("E-mail: ");
         String email = SC.next();
         Usuario u = usuarios.search(email);
-        
-        u.setApellidos(lastname); 
+
+        u.setApellidos(lastname);
     }
-    
+
     /**
      * Metodo para actualizar la contraseña de diferentes usuarios.
      */
-    public static void updatePassword(){
+    public static void updatePassword() {
         final Scanner SC = new Scanner(System.in);
         System.out.print("Password: ");
         String password = SC.next();
-        
+
         System.out.print("E-mail: ");
         String email = SC.next();
         Usuario u = usuarios.search(email);
-        
+
         u.setPassword(password);
     }
-    
+
     /**
      * Metodo para actualizar el rol de diferentes usuarios.
      */
-    public static void updateRol(){
-        final Scanner SC = new Scanner (System.in);
+    public static void updateRol() {
+        final Scanner SC = new Scanner(System.in);
         System.out.print("Rol: ");
         String rol = SC.next();
-        
+
         System.out.print("E-mail: ");
         String email = SC.next();
         Usuario u = usuarios.search(email);
-        if (rol.equalsIgnoreCase("admin")){
+        if (rol.equalsIgnoreCase("admin")) {
             u.setRol(Usuario.ADMIN);
-        }else{
+        } else {
             u.setRol(Usuario.USER);
         }
-   
+
     }
-    
-    
+
     /**
      * Metodo para eliminar usuario.
      */
     public static void delete() {
         final Scanner SCANNER = new Scanner(System.in);
-        
+
         System.out.print("E-mail: ");
-        
+
         String s = SCANNER.nextLine();
         s = s.replace(" ", "");
         String[] emails = s.split(",");
-        for (String email : emails){
+        for (String email : emails) {
             Usuario usuario = usuarios.search(email);
-            System.out.printf("Estas intentando eliminar a %s %s, estas  seguro (Si,No)\n",usuario.getNombre(),usuario.getApellidos());
+            System.out.printf("Estas intentando eliminar a %s %s, estas  seguro (Si,No)\n", usuario.getNombre(), usuario.getApellidos());
             char option = SCANNER.next().charAt(0);
-            if (Character.toLowerCase(option) == 's' || Character.toLowerCase(option) == 'y'){
+            if (Character.toLowerCase(option) == 's' || Character.toLowerCase(option) == 'y') {
                 if (usuarios.remove(usuario)) {
                     System.out.printf("%s %s fue eliminado permanentemente\n", usuario.getNombre(), usuario.getApellidos());
-                }else{
+                } else {
                     System.out.printf("%s $s no existe como usuario\n", usuario.getNombre(), usuario.getApellidos());
                 }
-            }else{
-                System.out.printf("%s %s no fue eliminado por no confirmar la operación\n",usuario.getNombre(),usuario.getApellidos());
-            }            
+            } else {
+                System.out.printf("%s %s no fue eliminado por no confirmar la operación\n", usuario.getNombre(), usuario.getApellidos());
+            }
         }
 
     }
@@ -436,8 +434,8 @@ public class AutenticacionUsuarios{
      */
     public static void read() {
         final Scanner SCANNER = new Scanner(System.in);
-        
-        int option=-1;
+
+        int option = -1;
         do {
             try {
                 option = showMenu(READ);
@@ -471,7 +469,7 @@ public class AutenticacionUsuarios{
                         System.out.println(userSearch.getAll());
                         System.out.printf("Numero de usuario: %d encontrados\n", userSearch.count());
                         break;
-                        
+
                 }
             } catch (UserAlreadyExistException ex) {
                 System.out.println(ex.getMessage());
@@ -485,14 +483,13 @@ public class AutenticacionUsuarios{
      */
     public static void create() throws NameLastNameException {
         final Scanner SCANNER = new Scanner(System.in);
-        
+
         String nombre;
         String apellidos;
         String email;
         String password;
         int rol;
-        
-        
+
         System.out.println("nombre: ");
         nombre = SCANNER.next();
 
@@ -512,12 +509,12 @@ public class AutenticacionUsuarios{
         if (rolStr.equalsIgnoreCase("admin")) {
             rol = Usuario.ADMIN;
         }
-        
-        if (containNumbers(nombre)){
+
+        if (containNumbers(nombre)) {
             throw new NameLastNameException("Nombre no puede contener numeros");
-        }else if (containNumbers(apellidos)){
+        } else if (containNumbers(apellidos)) {
             throw new NameLastNameException("Apellido no puede contener numeros");
-        }else{
+        } else {
             try {
                 usuarios.add(new Usuario(nombre, apellidos, email, password, rol));
             } catch (UserAlreadyExistException ex) {
@@ -547,22 +544,22 @@ public class AutenticacionUsuarios{
                     option = exit();
                     break;
                 case 3:
-                    option=showMenu(MENUADN);
-                    int opADN=0;
-                    switch(opADN){
+                    option = showMenu(MENUADN);
+                    int opADN = 0;
+                    switch (opADN) {
                         case 0:
-                            opADN=exit();
+                            opADN = exit();
                         case 1:
-                            opADN= darVueltaCadenaADN();
+                            opADN = darVueltaCadenaADN();
                             break;
                         case 2:
-                            opADN= baseMasRepetida();
+                            opADN = baseMasRepetida();
                             break;
                         case 3:
                             opADN = baseMenosRepetida();
                             break;
                         case 4:
-                            opADN =mostrarBases();
+                            opADN = mostrarBases();
                             break;
                         case 5:
                             opADN = convertADNtoARN();
@@ -571,8 +568,7 @@ public class AutenticacionUsuarios{
                             opADN = convertARNtoADN();
                             break;
                     }
-                    
-                    
+
             }
         } while (option != 0);
     }
@@ -584,22 +580,21 @@ public class AutenticacionUsuarios{
         // guardar los usuarios en archivos.bin y cerrar la aplicación
         Bin bin = new Bin();
         PrivateToken pt = new PrivateToken();
-        bin.addList(usuarios,pt.getToken());
+        bin.addList(usuarios, pt.getToken());
         System.exit(0);
     }
 
     private static boolean containNumbers(String str) {
-        return 
-            str.contains("1") || 
-            str.contains("2") || 
-            str.contains("3") || 
-            str.contains("4") ||
-            str.contains("5") || 
-            str.contains("6") || 
-            str.contains("7") || 
-            str.contains("8") ||
-            str.contains("9") ||
-            str.contains("0");
+        return str.contains("1")
+                || str.contains("2")
+                || str.contains("3")
+                || str.contains("4")
+                || str.contains("5")
+                || str.contains("6")
+                || str.contains("7")
+                || str.contains("8")
+                || str.contains("9")
+                || str.contains("0");
     }
 
     private static int darVueltaCadenaADN() {
@@ -607,7 +602,8 @@ public class AutenticacionUsuarios{
     }
 
     private static int baseMasRepetida() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        return 0;
     }
 
     private static int baseMenosRepetida() {

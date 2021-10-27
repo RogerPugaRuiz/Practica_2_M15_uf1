@@ -42,7 +42,7 @@ public class EncryptAndDecrypt {
      * @param key
      * @return sha-1 key
      */
-    public SecretKeySpec createKey(String key) {
+    private SecretKeySpec createKey(String key) {
         try {
             byte[] listByte = key.getBytes("UTF-8");
             MessageDigest md = MessageDigest.getInstance("SHA-1");

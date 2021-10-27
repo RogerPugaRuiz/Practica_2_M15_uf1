@@ -9,19 +9,11 @@
 
 import Encryption.EncryptAndDecrypt;
 import PrivateToken.PrivateToken;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
-
-import Backend.Exception.UserAlreadyExistException;
 import Backend.Usuario;
 import Backend.Usuarios;
+import login_logout.DNATools;
+import login_logout.Exception.InvalidDNAException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -72,8 +64,25 @@ public class Practica2Test {
             Usuario user_login = users.login("roger@gmail.com", "1234");
             Boolean condition = user_login.equals(EXPECTED_USER);
             assertTrue("Login Correcto",condition);
-        } catch (UserAlreadyExistException ex) {
-            System.out.println(ex.getMessage());
+        } catch (Exception ex) {
+            fail(ex.getMessage());
+        }
+    }
+    @Test
+    public void loginFailTest(){
+                try {
+            Usuarios users = new Usuarios();
+            final Usuario EXPECTED_USER = new Usuario(
+                    "Roger",
+                    "Puga",
+                    "roger@gmail.com",
+                    "1234", Usuario.USER);
+            users.add(EXPECTED_USER);
+            Usuario user_login = users.login("roger@gmail.com", "123");
+            Boolean condition = user_login == null;
+            assertTrue("Login Correcto",condition);
+        } catch (Exception ex) {
+            fail(ex.getMessage());
         }
     }
 
@@ -89,18 +98,24 @@ public class Practica2Test {
             
             assertTrue("encrypt correct", expected.equals(decrypt));
             System.out.println(decrypt);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchPaddingException ex) {
-            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidKeyException ex) {
-            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalBlockSizeException ex) {
-            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (BadPaddingException ex) {
-            Logger.getLogger(Practica2Test.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            fail(ex.getMessage());
+        }
+    }
+    
+    @Test
+    public void encryptFailTest(){
+                try {
+            String key = "holalskdjflksjdflksjdlfkjsdkjf";
+            String expected = "hola mundo";
+            EncryptAndDecrypt ead = new EncryptAndDecrypt();
+            String encrypt = ead.encrypt(expected, "holalskdjflksjdflksjdlf");
+            String decrypt = ead.decrypt(encrypt, key);
+            
+            assertFalse("encrypt correct", expected.equals(decrypt));
+            System.out.println(decrypt);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
     }
     
@@ -118,6 +133,48 @@ public class Practica2Test {
         String repeatKey = pt.getToken();
         System.out.println(pt.getToken());
         assertTrue("correcto",key.equals(repeatKey));
+    }
+    
+    @Test
+    public void ReversedAdnTest() {
+        try {
+            DNATools tools = new DNATools();
+            String adn = "agcc";
+            String expectedAdn = "CCGA";
+            String new_adn = tools.reversed(adn);
+            assertTrue("Correcto",expectedAdn.equals(new_adn));
+
+        } catch (InvalidDNAException ex) {
+            fail(ex.getMessage());
+        }
+    }
+    @Test
+    public void ReversedAdnFailTest(){
+                try {
+            DNATools tools = new DNATools();
+            String adn = "agcc";
+            String expectedAdn = "CCGA";
+            String new_adn = tools.reversed("AGCT");
+            assertFalse("Correcto",expectedAdn.equals(new_adn));
+
+        } catch (InvalidDNAException ex) {
+            fail(ex.getMessage());
+        }
+    }
+    
+    @Test
+    public void IsValidAdnTest(){
+        String valid_adn = "AGCT";
+        DNATools tools = new DNATools();
+        
+        for (int i=0; i<valid_adn.length(); i++){
+            if (tools.isValidAdn(valid_adn.charAt(i))){
+                System.out.println(valid_adn.charAt(i));
+            }else{
+                fail("error");
+            }
+        }
+        
     }
 
 }
