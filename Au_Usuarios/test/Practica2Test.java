@@ -9,11 +9,10 @@
 
 import Encryption.EncryptAndDecrypt;
 import PrivateToken.PrivateToken;
-
-import Backend.Usuario;
-import Backend.Usuarios;
-import login_logout.DNATools;
+import DNATools.DNATools;
 import login_logout.Exception.InvalidDNAException;
+import Users.Usuario;
+import Users.Usuarios;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

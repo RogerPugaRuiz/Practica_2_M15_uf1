@@ -4,8 +4,10 @@
  */
 package Frontend;
 
-import Backend.*;
+import PersistentData.Bin;
+import Users.Usuario;
 import PrivateToken.PrivateToken;
+import Users.Usuarios;
 
 /**
  *

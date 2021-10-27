@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Backend;
+package PersistentData;
 
 import Encryption.EncryptAndDecrypt;
 import java.io.FileNotFoundException;
@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
 import java.util.Scanner;
+import Users.Usuario;
+import Users.Usuarios;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

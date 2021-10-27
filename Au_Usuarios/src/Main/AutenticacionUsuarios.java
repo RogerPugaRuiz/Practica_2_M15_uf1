@@ -1,12 +1,8 @@
 /*
  * github repository:  https://github.com/RogerPugaRuiz/Au_Usuarios.git
  */
+package Main;
 
-package Backend;
-
-import Backend.Exception.LoginException;
-import Backend.Exception.NameLastNameException;
-import Backend.Exception.UserAlreadyExistException;
 import Users.Usuarios;
 import Users.Usuario;
 import PersistentData.Json;
@@ -14,7 +10,10 @@ import PersistentData.Bin;
 import PrivateToken.PrivateToken;
 import java.util.Random;
 import java.util.Scanner;
-import static Main.Menus.*;
+import Backend.Exception.LoginException;
+import Backend.Exception.NameLastNameException;
+import Backend.Exception.UserAlreadyExistException;
+import static Backend.Menus.*;
 
 
 /**

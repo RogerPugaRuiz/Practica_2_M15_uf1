@@ -4,8 +4,8 @@
  */
 package Frontend;
 
-import Backend.Usuario;
-import Backend.Usuarios;
+import Users.Usuario;
+import Users.Usuarios;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;

@@ -3,7 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Backend;
+
+package PersistentData;
 
 import Encryption.EncryptAndDecrypt;
 import java.io.FileInputStream;
@@ -19,6 +20,8 @@ import java.security.NoSuchAlgorithmException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import Users.Usuario;
+import Users.Usuarios;
 
 
 /**
