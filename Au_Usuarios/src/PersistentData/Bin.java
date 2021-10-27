@@ -25,30 +25,29 @@ import Users.Usuarios;
 
 
 /**
- * Classe que gestiona archivos binarios para guardar y leer perfiles de usuarios.
+ * Class to control the file binary.
  * @author roger
  */
 public class Bin {
     
     /**
-     * Contructor por defecto.
+     * Default constructor.
      */
     public Bin(){
     }
     
     /**
-     * Metodo para añadir un usuario al archivo bin
+     * Method to add new user in file binary
      * @param u
-     * @return boolean true si la escritura fue un exito
+     * @param token
+     * @return true if no problems
      */
     public boolean add(Usuario u,String token) {
         try{
-            // crear el objeto de output stream
             ObjectOutputStream oss = new ObjectOutputStream(new FileOutputStream("archivo.bin"));
-            // escribir solo un usuario
-            
             EncryptAndDecrypt ead = new EncryptAndDecrypt();
             
+            // encrypt password
             String password = u.getPassword();
             u.setPassword(ead.encrypt(password, token));
             oss.writeObject(u); 
@@ -66,29 +65,28 @@ public class Bin {
     }
     
     /**
-     * Metodo para añadir multiples usuarios al archivo bin.
-     * @param usuarios 
+     * Method to add in "Usuarios" class.
+     * @param usuarios array users
+     * @param token key for encrypt and decrypt
      */
     public void addList(Usuarios usuarios,String token) {
 
         try{
-            // crear objeto de salida de datos
+
             ObjectOutputStream oss = new ObjectOutputStream(new FileOutputStream("archivo.bin"));
-            // crear un iterador de de usuarios
             Iterator<Usuario> iterator = usuarios.iterator();
             
-            EncryptAndDecrypt ead = new EncryptAndDecrypt();
-            // mientras exista algun usuario
+            // while users have user
             while(iterator.hasNext()){
-                //escribe el usuario en el documento "archivo.bin"
-  
+                // decrypt de password and write de user in "Usuarios"
+                EncryptAndDecrypt ead = new EncryptAndDecrypt();
                 Usuario u = iterator.next();
                 String password = u.getPassword();
                 u.setPassword(ead.encrypt(password, token));
                 oss.writeObject(u);
                 u.setPassword(password);
             }
-            // no existe más usuarios y se cierra la salida de datos
+            // no more users, close de stream
             oss.close();
         }catch (IOException e){
             System.out.println(e.getMessage());
@@ -101,52 +99,54 @@ public class Bin {
     }
     
     
-    /**
-     * Metodo para leer del archivo bin y crear los usuarios
-     * @param usuarios 
-     * @param token 
-     */
+
+    /** Method to read a file binary and put in "Usuarios" class.
+    * @param usuarios array users
+    * @param token key for encrypt and decrypt
+    */
     public void read(Usuarios usuarios,String token) {
         try {
             
-            //nueva salida de datos de objetos
+            // try open the binary file
             ObjectInputStream ois;
-            //instanciar la salida de datos de objetos con el "archivo.bin"
             ois = new ObjectInputStream(new FileInputStream("archivo.bin"));
-            //leer el primer usuario
-            Usuario u = (Usuario) ois.readObject();
-            //mientras el usuario no sea nulo
             
-            EncryptAndDecrypt ead = new EncryptAndDecrypt();
+            //first user
+            Usuario u = (Usuario) ois.readObject();
+            //while u is not null continue
             while (u != null) {
-                //System.out.println(u.getAll());
-                //añadimos el usuario a la classe usuarios.
+                
                 try{
-                    
-                    
+
+                    // try encrypt and add new user
+                    EncryptAndDecrypt ead = new EncryptAndDecrypt();
 
                     String password = u.getPassword();
                     u.setPassword(ead.decrypt(password, token));
                     
                     usuarios.add(u);
 
-                    //siguiente usuario
                     
                 } catch (UserAlreadyExistException ex) {
+                    // if user already exist print the message error
                     System.out.println(ex.getMessage());
                 } catch (NullPointerException ex) {
+                    // if the user is null, token fail
                     System.out.println("Token invalido");
-                } catch (InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException ex) {
-                    System.out.println(ex.getMessage());
-                }
+
+                } catch (Exception ex) {
+                    // else the no controller error
+                    System.out.println("Error inesperado relacionado con archivo.bin");
+                }               
+                // next user
                 u = (Usuario) ois.readObject();
             }
-            //cerramos la salida de datos
+            //no more users, close the stream
             ois.close();
         } catch (FileNotFoundException ex) {
+            // file not found
             System.out.println("archivo binario no creado");
         } catch (IOException ex) {
-            
         } catch (ClassNotFoundException ex) {
             
         }
