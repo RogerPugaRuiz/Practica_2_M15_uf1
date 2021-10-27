@@ -9,19 +9,8 @@
 
 import Encryption.EncryptAndDecrypt;
 import PrivateToken.PrivateToken;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import login_logout.ADNtools;
-import login_logout.Exception.ReversedAdnException;
-
-
-import login_logout.Exception.UserAlreadyExistException;
+import login_logout.DNATools;
+import login_logout.Exception.InvalidDNAException;
 import login_logout.Usuario;
 import login_logout.Usuarios;
 import org.junit.After;
@@ -147,15 +136,43 @@ public class Practica2Test {
     @Test
     public void ReversedAdnTest() {
         try {
-            ADNtools tools = new ADNtools();
+            DNATools tools = new DNATools();
             String adn = "agcc";
-            String expectedAdn = "ccga";
+            String expectedAdn = "CCGA";
             String new_adn = tools.reversed(adn);
             assertTrue("Correcto",expectedAdn.equals(new_adn));
 
-        } catch (ReversedAdnException ex) {
+        } catch (InvalidDNAException ex) {
             fail(ex.getMessage());
         }
+    }
+    @Test
+    public void ReversedAdnFailTest(){
+                try {
+            DNATools tools = new DNATools();
+            String adn = "agcc";
+            String expectedAdn = "CCGA";
+            String new_adn = tools.reversed("AGCT");
+            assertFalse("Correcto",expectedAdn.equals(new_adn));
+
+        } catch (InvalidDNAException ex) {
+            fail(ex.getMessage());
+        }
+    }
+    
+    @Test
+    public void IsValidAdnTest(){
+        String valid_adn = "AGCT";
+        DNATools tools = new DNATools();
+        
+        for (int i=0; i<valid_adn.length(); i++){
+            if (tools.isValidAdn(valid_adn.charAt(i))){
+                System.out.println(valid_adn.charAt(i));
+            }else{
+                fail("error");
+            }
+        }
+        
     }
 
 }

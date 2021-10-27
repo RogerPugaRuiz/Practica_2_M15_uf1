@@ -8,13 +8,13 @@ package login_logout.Exception;
  *
  * @author roger
  */
-public class ReversedAdnException extends Exception{
+public class InvalidDNAException extends Exception{
 
     /**
      * Creates a new instance of <code>ReversedAdnException</code> without
      * detail message.
      */
-    public ReversedAdnException() {
+    public InvalidDNAException() {
     }
 
     /**
@@ -23,7 +23,7 @@ public class ReversedAdnException extends Exception{
      *
      * @param msg the detail message.
      */
-    public ReversedAdnException(String msg) {
+    public InvalidDNAException(String msg) {
         super(msg);
     }
 }
