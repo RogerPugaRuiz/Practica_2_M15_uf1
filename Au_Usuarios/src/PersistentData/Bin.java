@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
-import login_logout.Exception.UserAlreadyExistException;
+import Exceptions.UserAlreadyExistException;
 import Users.Usuario;
 import Users.Usuarios;
 

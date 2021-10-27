@@ -10,7 +10,7 @@
 import Encryption.EncryptAndDecrypt;
 import PrivateToken.PrivateToken;
 import DNATools.DNATools;
-import login_logout.Exception.InvalidDNAException;
+import Exceptions.InvalidDNAException;
 import Users.Usuario;
 import Users.Usuarios;
 import org.junit.After;

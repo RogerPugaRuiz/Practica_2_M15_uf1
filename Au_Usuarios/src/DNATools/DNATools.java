@@ -5,7 +5,7 @@
  */
 package DNATools;
 
-import login_logout.Exception.InvalidDNAException;
+import Exceptions.InvalidDNAException;
 
 /**
  *
