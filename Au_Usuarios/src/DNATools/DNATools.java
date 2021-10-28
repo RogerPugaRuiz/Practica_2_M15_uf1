@@ -63,7 +63,8 @@ public class DNATools {
     }
 
     /**
-     * 
+     * Method that shows the most repeated base of the DNA strand.
+     *
      * @param cadena
      * @return the letter of the most repeated string.
      */
@@ -99,8 +100,85 @@ public class DNATools {
         return caracter;
     }
 
-    public char baseLeastRepeated(/*String cadena*/){
+    /**
+     * Counts the bases of the repeated DNA strand.
+     * @return the base of the most repeated string
+     */
+    public char baseLeastRepeated(/*String cadena*/) {
+        String cadena = "agggggctgc";
+        cadena = cadena.toUpperCase();
         char caracter = 0;
-        return caracter;
+        int contA = 0;
+        int contT = 0;
+        int contC = 0;
+        int contG = 0;
+
+        int err = 0;
+        char[] carctersADN = cadena.toCharArray();
+        for (char cad : carctersADN) {
+            err++;
+            if (cad == 'A') {
+                contA++;
+            } else if (cad == 'T') {
+                contT++;
+            } else if (cad == 'C') {
+                contC++;
+            } else if (cad == 'G') {
+                contG++;
+            } else {
+                System.out.println("Error, el format de la cadena d’ADN no és vàlid. Caracter incorrecte a la posició " + err);
+                System.exit(0);
+            }
+        }
+        char a = 'A';
+        char t = 'T';
+        char c = 'C';
+        char g = 'G';
+        if (contA < contT && contA < contC && contA < contG) {
+            return a;
+        } else if (contT < contA && contT < contC && contT < contG) {
+            return t;
+        } else if (contC < contA && contC < contT && contC < contG) {
+            return c;
+        } else {
+            return g;
+        }
+    }
+
+    /**
+     * Count bases and show it.
+     * @param cadena 
+     */
+    public void seeBases(String cadena) {
+        
+        cadena = cadena.toUpperCase();
+        char caracter = 0;
+        int contA = 0;
+        int contT = 0;
+        int contC = 0;
+        int contG = 0;
+
+        int err = 0;
+        char[] carctersADN = cadena.toCharArray();
+        for (char cad : carctersADN) {
+            err++;
+            if (cad == 'A') {
+                contA++;
+            } else if (cad == 'T') {
+                contT++;
+            } else if (cad == 'C') {
+                contC++;
+            } else if (cad == 'G') {
+                contG++;
+            } else {
+                System.out.println("Error, el format de la cadena d’ADN no és vàlid. Caracter incorrecte a la posició " + err);
+                System.exit(0);
+            }
+        }
+        System.out.println("ADENINAS: " + contA);
+        System.out.println("TIMINAS: " + contT);
+        System.out.println("CITOSINAS: " + contC);
+        System.out.println("GUANINAS: " + contG);
+        //return cadena;
     }
 }
