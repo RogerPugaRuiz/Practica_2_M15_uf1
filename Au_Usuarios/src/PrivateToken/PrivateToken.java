@@ -20,11 +20,18 @@ import java.util.logging.Logger;
 public class PrivateToken {
 
     private String FILE_NAME = "key.txt";
-
+    
+    /**
+     * Method to return a string key
+     * @return 
+     */
     public String getToken() {
+        
+        // try to open a file
         File file = new File(FILE_NAME);
 
         try {
+            // if file exist read a key
             FileInputStream fis = new FileInputStream(file);
             int valor = fis.read();
             String key = "";
@@ -35,13 +42,15 @@ public class PrivateToken {
             return key;
             
             
-        } catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException ex) { // if file not exist
             try {
+                // crete new file and write the new key
                 file.createNewFile();
                 FileOutputStream fos = new FileOutputStream(file);
                 EncryptAndDecrypt ead = new EncryptAndDecrypt();
                 String key = ead.getKey();
                 fos.write(key.getBytes("UTF-8"));
+                file.setReadOnly();
                 return key;
             } catch (IOException ex1) {
                 return null;

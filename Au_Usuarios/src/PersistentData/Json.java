@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package login_logout;
+package PersistentData;
 
 import Encryption.EncryptAndDecrypt;
+import Exceptions.UserAlreadyExistException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -13,61 +14,72 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
 import java.util.Scanner;
+import Users.Usuario;
+import Users.Usuarios;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
- * Classe que importa y exporta Usuarios en json.
- *
+ * Class to control de json file.
  * @author roger
  */
 public class Json {
-
+    
+    // ckeck if is json encrypt
     private static boolean isJsonEncrypt = false;
 
     /**
-     * Metodo para importar un archivo json en objeto Usuarios
-     *
+     * Method to import json.
      * @param jsonFile
-     * @return Usuarios
+     * @return 
      */
     public Usuarios jsonImport(String jsonFile) {
-        // crear el convertidos de json 
+
         JSONParser parser = new JSONParser();
-
-        // intenta leer el archivo jsonFile
+        
+        // try to read a json file 
         try ( Reader reader = new FileReader(jsonFile)) {
-            // creamos el objetos con el json
-            JSONObject jsonObject = (JSONObject) parser.parse(reader);
-            // array de usuarios
-            JSONArray listaUsuarios = (JSONArray) jsonObject.get("usuarios");
-            // System.out.println(listaUsuarios.toString());
-            // Iteramos el array
-            Iterator<JSONObject> iterator = listaUsuarios.iterator();
-            Usuarios usuarios = new Usuarios();
 
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            
+            // open a array object with key usuarios
+
+                JSONArray listaUsuarios = (JSONArray) jsonObject.get("usuarios");
+                Iterator<JSONObject> iterator = listaUsuarios.iterator();
+                Usuarios usuarios = new Usuarios();
+ 
+            // is json encrypt
             Scanner sc = new Scanner(System.in);
             System.out.println("¿Las contraseñas estan encriptada?(Si/No)");
             char s = sc.next().charAt(0);
             String key = "";
             if (s == 'S' || s == 's') {
+                // json is encrypt
                 System.out.println("Escribe el token: ");
                 key = sc.next();
                 Json.isJsonEncrypt = true;
             } else {
+                // json is not encrypt
                 Json.isJsonEncrypt = false;
             }
 
-            // mientras el siguente iterador existe
+            // while json has a user
+            int index = 0;
             while (iterator.hasNext()) {
+                index++;
                 final JSONObject nextUser = iterator.next();
-                // creamos el nuevo usuario
                 Usuario usuario = null;
-
+                
+                // json is encrypt
                 if (Json.isJsonEncrypt) {
-
+                    // create user with password encrypt
                     EncryptAndDecrypt ead = new EncryptAndDecrypt();
                     String password = ead.decrypt(nextUser.get("password").toString(), key);
                     usuario = new Usuario(
@@ -76,40 +88,57 @@ public class Json {
                             nextUser.get("email").toString(),
                             password,
                             rol(nextUser.get("rol").toString()));
-                    // lo añadimos a la classe usuarios
                 } else {
+                    // create user with normal password
                     usuario = new Usuario(
                             nextUser.get("nombre").toString(),
                             nextUser.get("apellidos").toString(),
                             nextUser.get("email").toString(),
                             nextUser.get("password").toString(),
                             rol(nextUser.get("rol").toString()));
-                    // lo añadimos a la classe usuarios
+                }
+                try {
+                    // add user in "usuarios"
+                    usuarios.add(usuario);
+                } catch (UserAlreadyExistException ex) {
+                    System.out.println("Usuario ya existente");
                 }
 
-                usuarios.add(usuario);
-
             }
-
+            
             return usuarios;
         } catch (FileNotFoundException ex) {
+            System.out.println("Json no encontrado");
         } catch (IOException ex) {
+            System.out.println("Error de entrada y salida de datos");
         } catch (ParseException ex) {
-        }catch (NullPointerException ex){
-            System.out.println("Token invalido");
-        }catch (Exception ex){
-            System.out.println("Error inesperado relacionado con" + jsonFile + ".json");
+            System.out.println("Error al crear el objeto json");
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
+            System.out.println("Error de encriptación");
+        } catch (NullPointerException ex){
+            System.out.println("Formato de json esperado:");
+            System.out.println("{");
+            System.out.println("    Usuarios : [{");
+            System.out.println("        \"nombre\":xxxxx,");
+            System.out.println("        \"apellidos\":xxxxx,");
+            System.out.println("        \"password\":xxxxx,");
+            System.out.println("        \"rol\":xxxxx");
+            System.out.println("        },{");
+            System.out.println("        \"nombre\":xxxxx,");
+            System.out.println("        \"apellidos\":xxxxx,");
+            System.out.println("        \"password\":xxxxx,");
+            System.out.println("        \"rol\":xxxxx}]");
+            System.out.println("}");
         }
-
+        
         return null;
 
     }
 
     /**
-     * Metodo para exportar los usuarios a un archivo json
-     *
+     * Method to export json file.
      * @param jsonFile
-     * @param usuarios
+     * @param usuarios 
      */
     public void jsonExport(String jsonFile, Usuarios usuarios) {
         JSONObject obj = new JSONObject();
@@ -121,19 +150,23 @@ public class Json {
         String token = ead.getKey();
         System.out.println("token-> " + token);
         
-        // mientras exista algun usuario
+        // while exist a user
         while (i.hasNext()) {
             try {
                 Usuario u = i.next();
                 
+                // encrypt password
                 String encryptPassword = ead.encrypt(u.getPassword(), token);
                 JSONObject objUsuario = new JSONObject();
+                
+                // add info in new json object
                 objUsuario.put("nombre", u.getNombre());
                 objUsuario.put("apellidos", u.getApellidos());
                 objUsuario.put("email", u.getEmail());
                 objUsuario.put("password", encryptPassword);
                 objUsuario.put("rol", u.getRol());
-                // añadimos el usuarios al array list de usuarios
+                
+                // add new json object in json array.
                 list.add(objUsuario);
             } catch (NullPointerException ex) {
                 System.out.println("Token invalido");
@@ -141,10 +174,10 @@ public class Json {
                 System.out.println("Error inesperado relacionado con" + jsonFile + ".json");
             }
         }
-        // añadimos el array list en el objeto json
+        // add json array in json object "usuarios"
         obj.put("usuarios", list);
 
-        //escribimos en el archivo json el objeto json
+        // write the json object in json file
         try ( FileWriter file = new FileWriter(jsonFile)) {
             file.write(obj.toJSONString());
         } catch (IOException ex) {
@@ -152,8 +185,7 @@ public class Json {
 
     }
 
-    // convierte un estring, en el caso de que la estring sea admin devuelve
-    // un 2. Caso contrario un 1.
+    // Method to convert a string role to int role
     private int rol(String s) {
         return s.equalsIgnoreCase("admin") ? 2 : 1;
     }
