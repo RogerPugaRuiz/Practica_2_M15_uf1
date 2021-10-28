@@ -6,6 +6,7 @@
 package PersistentData;
 
 import Encryption.EncryptAndDecrypt;
+import Exceptions.UserAlreadyExistException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -15,6 +16,11 @@ import java.util.Iterator;
 import java.util.Scanner;
 import Users.Usuario;
 import Users.Usuarios;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -44,10 +50,11 @@ public class Json {
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             
             // open a array object with key usuarios
-            JSONArray listaUsuarios = (JSONArray) jsonObject.get("usuarios");
-            Iterator<JSONObject> iterator = listaUsuarios.iterator();
-            Usuarios usuarios = new Usuarios();
-            
+
+                JSONArray listaUsuarios = (JSONArray) jsonObject.get("usuarios");
+                Iterator<JSONObject> iterator = listaUsuarios.iterator();
+                Usuarios usuarios = new Usuarios();
+ 
             // is json encrypt
             Scanner sc = new Scanner(System.in);
             System.out.println("¿Las contraseñas estan encriptada?(Si/No)");
@@ -64,7 +71,9 @@ public class Json {
             }
 
             // while json has a user
+            int index = 0;
             while (iterator.hasNext()) {
+                index++;
                 final JSONObject nextUser = iterator.next();
                 Usuario usuario = null;
                 
@@ -88,22 +97,40 @@ public class Json {
                             nextUser.get("password").toString(),
                             rol(nextUser.get("rol").toString()));
                 }
-                // add user in "usuarios"
-                usuarios.add(usuario);
+                try {
+                    // add user in "usuarios"
+                    usuarios.add(usuario);
+                } catch (UserAlreadyExistException ex) {
+                    System.out.println("Usuario ya existente");
+                }
 
             }
-
+            
             return usuarios;
         } catch (FileNotFoundException ex) {
-            // file not found
-        } catch (IOException | ParseException ex) {
-            
-        }catch (NullPointerException ex){
-            System.out.println("Token invalido");
-        }catch (Exception ex){
-            System.out.println("Error inesperado relacionado con" + jsonFile + ".json");
+            System.out.println("Json no encontrado");
+        } catch (IOException ex) {
+            System.out.println("Error de entrada y salida de datos");
+        } catch (ParseException ex) {
+            System.out.println("Error al crear el objeto json");
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
+            System.out.println("Error de encriptación");
+        } catch (NullPointerException ex){
+            System.out.println("Formato de json esperado:");
+            System.out.println("{");
+            System.out.println("    Usuarios : [{");
+            System.out.println("        \"nombre\":xxxxx,");
+            System.out.println("        \"apellidos\":xxxxx,");
+            System.out.println("        \"password\":xxxxx,");
+            System.out.println("        \"rol\":xxxxx");
+            System.out.println("        },{");
+            System.out.println("        \"nombre\":xxxxx,");
+            System.out.println("        \"apellidos\":xxxxx,");
+            System.out.println("        \"password\":xxxxx,");
+            System.out.println("        \"rol\":xxxxx}]");
+            System.out.println("}");
         }
-
+        
         return null;
 
     }

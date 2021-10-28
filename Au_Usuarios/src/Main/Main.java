@@ -3,17 +3,15 @@
  */
 package Main;
 
-import Users.Usuarios;
-import Users.Usuario;
 import PersistentData.Json;
 import PersistentData.Bin;
 import PrivateToken.PrivateToken;
 import java.util.Random;
 import java.util.Scanner;
-import Backend.Exception.LoginException;
-import Backend.Exception.NameLastNameException;
-import Backend.Exception.UserAlreadyExistException;
 import static Main.Menus.*;
+import Exceptions.*;
+import Users.Usuario;
+import Users.Usuarios;
 
 
 /**
@@ -72,6 +70,7 @@ public class Main {
             } while (option != 0);
 
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return false;
         }
         return true;
@@ -112,7 +111,7 @@ public class Main {
                 usuarios.addAll(json.jsonImport(jsonFile));
                 System.out.printf("Usuarios importados de %s\n", jsonFile);
             } catch (NullPointerException ex) {
-                System.out.printf("No existe el archivo %s\n", jsonFile);
+                System.out.printf("hay problemas con el archivo %s\n", jsonFile);
             }
         }
 
@@ -120,8 +119,6 @@ public class Main {
 
     /**
      * Method to loop exit
-     *
-     * @param bin Classe bin para gestionar los archivos binarios
      * @return int 0, loop breaks when option is 0
      */
     public static int exit() {
@@ -295,6 +292,7 @@ public class Main {
             switch (option) {
                 case 0:
                     option = exit();
+                    break;
                 case 1:
                     option = reversedDNA();
                     break;

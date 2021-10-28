@@ -2,28 +2,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Exception.java to edit this template
  */
-package login_logout.Exception;
+
+package Exceptions;
+
 
 /**
  *
  * @author roger
  */
-public class InvalidDNAException extends Exception{
+public class NameLastNameException extends Exception{
 
     /**
-     * Creates a new instance of <code>ReversedAdnException</code> without
+     * Creates a new instance of <code>NameLastNameException</code> without
      * detail message.
      */
-    public InvalidDNAException() {
+    public NameLastNameException() {
     }
 
     /**
-     * Constructs an instance of <code>ReversedAdnException</code> with the
+     * Constructs an instance of <code>NameLastNameException</code> with the
      * specified detail message.
      *
      * @param msg the detail message.
      */
-    public InvalidDNAException(String msg) {
+    public NameLastNameException(String msg) {
         super(msg);
     }
 }

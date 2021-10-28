@@ -7,7 +7,7 @@ package Users;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import Backend.Exception.UserAlreadyExistException;
+import Exceptions.UserAlreadyExistException;
 
 
 /**

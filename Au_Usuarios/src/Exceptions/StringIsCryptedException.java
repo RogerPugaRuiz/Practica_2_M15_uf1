@@ -2,28 +2,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Exception.java to edit this template
  */
-package Backend.Exception;
+
+package Exceptions;
+
 
 /**
  *
  * @author roger
  */
-public class NameLastNameException extends Exception{
+public class StringIsCryptedException extends Exception{
 
     /**
-     * Creates a new instance of <code>NameLastNameException</code> without
+     * Creates a new instance of <code>StringIsCryptedException</code> without
      * detail message.
      */
-    public NameLastNameException() {
+    public StringIsCryptedException() {
     }
 
     /**
-     * Constructs an instance of <code>NameLastNameException</code> with the
+     * Constructs an instance of <code>StringIsCryptedException</code> with the
      * specified detail message.
      *
      * @param msg the detail message.
      */
-    public NameLastNameException(String msg) {
+    public StringIsCryptedException(String msg) {
         super(msg);
     }
 }
