@@ -13,12 +13,14 @@ import Exceptions.InvalidDNAException;
  */
 public class DNATools {
 
-    private final char[] bases = {
+    private final char[] BASES = {
         'A',
         'G',
         'C',
         'T'};
-
+    
+    private final int ADN_TO_ARN = 0;
+    private final int ARN_TO_ADN = 1;
     /**
      * Method to reversed the string adn
      *
@@ -52,10 +54,10 @@ public class DNATools {
     public boolean isValidAdn(char base) {
         // default sentense, DNA not valid
         boolean isTrue = false;
-        for (int i = 0; i < bases.length; i++) {
+        for (int i = 0; i < BASES.length; i++) {
 
             // if any letters are valid, the sentense are valid
-            if (bases[i] == base) {
+            if (BASES[i] == base) {
                 isTrue = true;
             }
         }
@@ -180,5 +182,44 @@ public class DNATools {
         System.out.println("CITOSINAS: " + contC);
         System.out.println("GUANINAS: " + contG);
         //return cadena;
+    }
+    
+     /**
+     * Method to convert DNA to RNA or RNA to DNA
+     * @param code String ARN OR ADN
+     * @param i type conversion
+     * @return string convertion 
+     */
+    private static String convert(String code, int i) {
+        //0 ADN to ARN
+        //1 ARN to ADN
+        
+        char array[] = code.toCharArray();
+        String newString = "";
+        switch (i) {
+            case 0:
+                for (char c : array) {
+                    c = Character.toUpperCase(c);
+                    
+                    if (c == 'T'){
+                        newString += 'U';
+                    }else{
+                        newString += c;
+                    }
+                }   break;
+            case 1:
+                for (char c : array) {
+                    c = Character.toUpperCase(c);
+                    
+                    if (c == 'U'){
+                        newString += 'T';
+                    }else{
+                        newString += c;
+                    }
+                }   break;
+            default:
+                return "ERROR la conversión no es valida";
+        }
+        return newString;
     }
 }
