@@ -79,7 +79,7 @@ public class Practica2Test {
             users.add(EXPECTED_USER);
             Usuario user_login = users.login("roger@gmail.com", "123");
             Boolean condition = user_login == null;
-            assertTrue("Login Correcto",condition);
+            assertTrue("Fail login",condition);
         } catch (Exception ex) {
             fail(ex.getMessage());
         }
@@ -96,7 +96,6 @@ public class Practica2Test {
             String decrypt = ead.decrypt(encrypt, key);
             
             assertTrue("encrypt correct", expected.equals(decrypt));
-            System.out.println(decrypt);
         } catch (Exception ex) {
             fail(ex.getMessage());
         }
@@ -111,8 +110,7 @@ public class Practica2Test {
             String encrypt = ead.encrypt(expected, "holalskdjflksjdflksjdlf");
             String decrypt = ead.decrypt(encrypt, key);
             
-            assertFalse("encrypt correct", expected.equals(decrypt));
-            System.out.println(decrypt);
+            assertFalse("encrypt incorrect", expected.equals(decrypt));
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -121,8 +119,7 @@ public class Practica2Test {
     @Test
     public void generateTokenTest(){
         EncryptAndDecrypt ead = new EncryptAndDecrypt();
-        assertTrue("todo correcto", ead.getKey().length() == 100);
-        
+        assertTrue("La longitud de la clave es la correcta", ead.getKey().length() == 100);
     }
     
     @Test
@@ -130,7 +127,7 @@ public class Practica2Test {
         PrivateToken pt = new PrivateToken();
         String key = pt.getToken();
         String repeatKey = pt.getToken();
-        assertTrue("correcto",key.equals(repeatKey));
+        assertTrue("Clave privada correcta",key.equals(repeatKey));
     }
     
     @Test
@@ -140,7 +137,7 @@ public class Practica2Test {
             String adn = "agcc";
             String expectedAdn = "CCGA";
             String new_adn = tools.reversed(adn);
-            assertTrue("Correcto",expectedAdn.equals(new_adn));
+            assertTrue("ADN",expectedAdn.equals(new_adn));
 
         } catch (InvalidDNAException ex) {
             fail(ex.getMessage());
@@ -153,7 +150,7 @@ public class Practica2Test {
             String adn = "agcc";
             String expectedAdn = "CCGA";
             String new_adn = tools.reversed("AGCT");
-            assertFalse("Correcto",expectedAdn.equals(new_adn));
+            assertFalse("ADN no valido",expectedAdn.equals(new_adn));
 
         } catch (InvalidDNAException ex) {
             fail(ex.getMessage());
@@ -166,13 +163,18 @@ public class Practica2Test {
         DNATools tools = new DNATools();
         
         for (int i=0; i<valid_adn.length(); i++){
-            if (tools.isValidAdn(valid_adn.charAt(i))){
-                System.out.println(valid_adn.charAt(i));
-            }else{
-                fail("error");
-            }
-        }
+            assertTrue(tools.isValidAdn(valid_adn.charAt(i)));
+        }        
+    }
+    
+    @Test
+    public void IsValidAdnFailTest(){
+        String valid_adn = "aa1234asdf";
+        DNATools tools = new DNATools();
         
+        for (int i=0; i<valid_adn.length(); i++){
+            assertFalse(tools.isValidAdn(valid_adn.charAt(i)));
+        }        
     }
 
 }
