@@ -4,20 +4,10 @@
  */
 package client;
 
-import Backend.Usuario;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
 import java.util.Timer;
-import java.util.TimerTask;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+
 
 /**
  *
@@ -150,9 +140,9 @@ public class LoginFrame extends javax.swing.JFrame{
         jTextPane1.setEnabled(false);
         jScrollPane1.setViewportView(jTextPane1);
 
-        jLabel3.setText("PORT:");
+        jLabel3.setText("IP:");
 
-        jLabel4.setText("HOST:");
+        jLabel4.setText("PORT:");
 
         jTextPane2.setEnabled(false);
         jScrollPane2.setViewportView(jTextPane2);

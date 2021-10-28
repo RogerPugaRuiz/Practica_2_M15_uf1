@@ -19,6 +19,7 @@ public class Server{
     public static void main(String[] args) {
         Server server = new Server();
         server.run();
+
     }
 
     public void run() {
@@ -35,7 +36,10 @@ public class Server{
     }
     
     public void login(){
+        ServerJFrame serverJFrame = new ServerJFrame();
+        serverJFrame.setVisible(true);
         ThreadLogin threadLogin = new ThreadLogin();
+        threadLogin.setjList1(serverJFrame.getjList1());
         threadLogin.setPort(8877);
         threadLogin.setUsuarios(usuarios);
         Thread miThread = new Thread(threadLogin);

@@ -4,7 +4,7 @@
  */
 package client;
 
-import Backend.Usuario;
+import Users.Usuario;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
