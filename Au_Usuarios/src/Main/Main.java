@@ -286,6 +286,7 @@ public class Main {
             switch (option) {
                 case 0:
                     option = exit();
+                    break;
                 case 1:
                     option = reversedDNA();
                     break;
