@@ -16,5 +16,5 @@ public class ADNtools {
             sb.append(adn.charAt(i));
         }
         return sb.toString();
-    }
+    }     
 }
