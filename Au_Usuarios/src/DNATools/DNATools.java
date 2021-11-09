@@ -190,7 +190,7 @@ public class DNATools {
      * @param i type conversion
      * @return string convertion 
      */
-    private static String convert(String code, int i) {
+    public String convert(String code, int i) {
         //0 ADN to ARN
         //1 ARN to ADN
         

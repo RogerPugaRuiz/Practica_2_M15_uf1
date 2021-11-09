@@ -176,6 +176,29 @@ public class Practica2Test {
             assertFalse(tools.isValidAdn(valid_adn.charAt(i)));
         }        
     }
+    
+
+    @Test
+    public void BaseMostRepetedTest() {
+        String cadena = "AGTCCCC";
+        DNATools tools = new DNATools();
+        char expResult = 'C';
+        
+        char result = tools.baseMostRepeted(cadena);
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void ConvertTest() {
+        String cadenaADN= "AGTTC";
+        DNATools tools = new DNATools();
+        String expResult = "AGUUC";
+        int i = 0;
+ 
+        String result = tools.convert(cadenaADN, i);
+        assertEquals(expResult, result);
+    }
+    
 
 }
 

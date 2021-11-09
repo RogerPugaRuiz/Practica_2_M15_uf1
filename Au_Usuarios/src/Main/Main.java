@@ -3,6 +3,7 @@
  */
 package Main;
 
+import DNATools.DNATools;
 import PersistentData.Json;
 import PersistentData.Bin;
 import PrivateToken.PrivateToken;
@@ -33,13 +34,15 @@ public class Main {
         "Intenta con algo diferente como un numero",
         "Lo siento pero esto esta fuera de mi programacion"};
 
+    public static final String ADN= "AGTCGCCTGCTGCAGCTGGTCAATCAAAAGAAATGAAACTTGACGAATA";
+    public static final String ARN= "AGUCGCCUGCUGCAGCUGGUCAAUCAAAAGAAAUGAAACUUGACGAAUA";
     /**
      * Main method.
      *
      * @param args
      */
     public static void main(String[] args) {
-
+        
         if (!run()) {
             System.out.println("Imposible ejecutar el programa");
         }
@@ -54,7 +57,7 @@ public class Main {
         try {
             // load a date with json and bin file
             loadData();
-
+            
             int option = 0;
             do {
                 option = showMenu(MENU);
@@ -67,7 +70,7 @@ public class Main {
                         break;
                 }
             } while (option != 0);
-
+            
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
@@ -90,14 +93,14 @@ public class Main {
 
         // guardar los nuevos jugadores en archivo.bin
         bin.addList(usuarios, pt.getToken());
-
+        
     }
 
     /**
      * Method to read a json and import users.
      */
     public static void jsonImport() {
-
+        
         Scanner sc = new Scanner(System.in);
         System.out.println("¿Quieres importar usuarios de un archivo Json?(Si/No)");
         char s = sc.next().charAt(0);
@@ -113,11 +116,12 @@ public class Main {
                 System.out.printf("hay problemas con el archivo %s\n", jsonFile);
             }
         }
-
+        
     }
 
     /**
      * Method to loop exit
+     *
      * @return int 0, loop breaks when option is 0
      */
     public static int exit() {
@@ -177,15 +181,15 @@ public class Main {
     /**
      * Method to get the e-mail, and password.
      */
-    public static void inputLogin() {
+    public static void inputLogin() throws InvalidDNAException {
         try {
             final Scanner SCANNER = new Scanner(System.in);
             System.out.print("e-mail: ");
             String email = SCANNER.next();
-
+            
             System.out.print("password: ");
             String password = SCANNER.next();
-
+            
             login(email, password);
         } catch (LoginException ex) {
             System.out.println(ex.getMessage());
@@ -199,11 +203,11 @@ public class Main {
      * @param password
      * @throws LoginException not possible login
      */
-    public static void login(String email, String password) throws LoginException {
+    public static void login(String email, String password) throws LoginException, InvalidDNAException {
         try {
             Usuario loginUser = usuarios.login(email, password);
             System.out.println(loginUser.getAll());
-
+            
             switch (loginUser.getRol()) {
                 case "admin": // user is admin
                     admin(loginUser);
@@ -212,7 +216,7 @@ public class Main {
                     user(loginUser);
                     break;
             }
-
+            
         } catch (java.lang.NullPointerException npe) {
             throw new LoginException("e-mail o contraseña incorrecta");
         }
@@ -256,7 +260,7 @@ public class Main {
      *
      * @param loginUser if he is an admin or simply a user
      */
-    public static void user(Usuario loginUser) {
+    public static void user(Usuario loginUser) throws InvalidDNAException {
         int option = 0;
         do {
             option = showMenu(MENUUSER);
@@ -271,15 +275,15 @@ public class Main {
                     option = exit();
                     break;
                 case 3: // DNATools
-                    DNATools();
+                    DNAMethods();
             }
         } while (option != 0);
     }
-    
+
     /**
      * Method to use a DNAtools class.
      */
-    public static void DNATools() {
+    public static void DNAMethods() throws InvalidDNAException {
         int option;
         do {
             option = showMenu(MENUADN);
@@ -288,57 +292,74 @@ public class Main {
                     option = exit();
                     break;
                 case 1:
-                    option = reversedDNA();
+                    reversedDNA();
+                    //option = reversedDNA();
                     break;
                 case 2:
-                    option = mostRepeatedBase();
+                    mostRepeatedBase();
                     break;
                 case 3:
-                    option = leastRepeatedBase();
+                    leastRepeatedBase();
                     break;
                 case 4:
-                    option = showBases();
+                    showBases();
                     break;
                 case 5:
-                    option = dnaToRna();
+                    dnaToRna();                   
                     break;
                 case 6:
-                    option = rnaToDna();
+                    rnaToDna();
                     break;
             }
         } while (option != 0);
     }
-    
-    
+
     // ============================== USER MEHTODS =====================================
     
-    private static int reversedDNA() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private static int mostRepeatedBase() {
-
-        return 0;
-    }
-
-    private static int leastRepeatedBase() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private static int showBases() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private static int dnaToRna() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private static int rnaToDna() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private static void reversedDNA() throws InvalidDNAException {
+        System.out.println("Cadena ADN: " + ADN);
+        DNATools rev = new DNATools();
+        String cadena = rev.reversed(ADN);
+        System.out.println("Volta ADN: " + cadena);
     }
     
-    // ============================== ADMIN METHODS ====================================
+    private static void mostRepeatedBase() {
+        System.out.println("Cadena ADN: " + ADN);
+        DNATools most = new DNATools();
+        char caracter = most.baseMostRepeted(ADN);
+        System.out.println("El caracter de la cadena que mes repeteix es: " + caracter);
+        
+    }
+    
+    private static void leastRepeatedBase() {
+        System.out.println("Cadena ADN: " + ADN);
+        DNATools least = new DNATools();
+        char caracter = least.baseLeastRepeated();
+        System.out.println("El caracter de la cadena que menys es repeteix es: " + caracter);
+    }
+    
+    private static void showBases() {
+        System.out.println("Cadena ADN: " + ADN);
+        DNATools show = new DNATools();
+        show.seeBases(ADN);
+    }
+    
+    private static void dnaToRna() {
+        System.out.println("Cadena ADN: " + ADN);
+        DNATools toRNA = new DNATools();
+        String cadena = toRNA.convert(ADN, 0);
+        System.out.println("ADN to ARN: " + cadena);
+        
+    }
+    
+    private static void rnaToDna() {
+        System.out.println("Cadena ARN: " + ARN);
+        DNATools toRNA = new DNATools();
+        String cadena = toRNA.convert(ARN, 1);
+        System.out.println("ARN to ADN: " + cadena);
+    }
 
+    // ============================== ADMIN METHODS ====================================
     /**
      * Method to export encrypt json
      */
@@ -368,7 +389,7 @@ public class Main {
                     System.out.println(ex.getMessage());
                 }
                 break;
-
+                
                 case 2: // read with diferents options
                     read();
                     break;
@@ -378,7 +399,7 @@ public class Main {
                 case 4: // user delete
                     delete();
                     break;
-
+                
             }
         } while (option != 0);
     }
@@ -407,7 +428,7 @@ public class Main {
                     updateRol();
                     break;
             }
-
+            
         } while (option != 0);
     }
 
@@ -418,11 +439,11 @@ public class Main {
         final Scanner SC = new Scanner(System.in);
         System.out.print("Nombre: ");
         String nombre = SC.next();
-
+        
         System.out.print("E-mail: ");
         String email = SC.next();
         Usuario u = usuarios.search(email);
-
+        
         u.setNombre(nombre);
     }
 
@@ -433,11 +454,11 @@ public class Main {
         final Scanner SC = new Scanner(System.in);
         System.out.print("Apellidos: ");
         String lastname = SC.nextLine();
-
+        
         System.out.println("E-mail: ");
         String email = SC.next();
         Usuario u = usuarios.search(email);
-
+        
         u.setApellidos(lastname);
     }
 
@@ -448,11 +469,11 @@ public class Main {
         final Scanner SC = new Scanner(System.in);
         System.out.print("Password: ");
         String password = SC.next();
-
+        
         System.out.print("E-mail: ");
         String email = SC.next();
         Usuario u = usuarios.search(email);
-
+        
         u.setPassword(password);
     }
 
@@ -463,7 +484,7 @@ public class Main {
         final Scanner SC = new Scanner(System.in);
         System.out.print("Rol: ");
         String rol = SC.next();
-
+        
         System.out.print("E-mail: ");
         String email = SC.next();
         Usuario u = usuarios.search(email);
@@ -472,7 +493,7 @@ public class Main {
         } else {
             u.setRol(Usuario.USER);
         }
-
+        
     }
 
     /**
@@ -480,9 +501,9 @@ public class Main {
      */
     public static void delete() {
         final Scanner SCANNER = new Scanner(System.in);
-
+        
         System.out.print("E-mail: ");
-
+        
         String s = SCANNER.nextLine();
         s = s.replace(" ", "");
         String[] emails = s.split(",");
@@ -500,7 +521,7 @@ public class Main {
                 System.out.printf("%s %s no fue eliminado por no confirmar la operación\n", usuario.getNombre(), usuario.getApellidos());
             }
         }
-
+        
     }
 
     /**
@@ -508,7 +529,7 @@ public class Main {
      */
     public static void read() {
         final Scanner SCANNER = new Scanner(System.in);
-
+        
         int option = -1;
         do {
             try {
@@ -543,13 +564,13 @@ public class Main {
                         System.out.println(userSearch.getAll());
                         System.out.printf("Numero de usuario: %d encontrados\n", userSearch.count());
                         break;
-
+                    
                 }
             } catch (UserAlreadyExistException ex) {
                 System.out.println(ex.getMessage());
             }
         } while (option != 0);
-
+        
     }
 
     /**
@@ -557,33 +578,33 @@ public class Main {
      */
     public static void create() throws NameLastNameException {
         final Scanner SCANNER = new Scanner(System.in);
-
+        
         String nombre;
         String apellidos;
         String email;
         String password;
         int rol;
-
+        
         System.out.println("nombre: ");
         nombre = SCANNER.next();
-
+        
         System.out.println("apellido: ");
         SCANNER.nextLine(); // para poder capturar una linea con espacios
         apellidos = SCANNER.nextLine();
-
+        
         System.out.println("email: ");
         email = SCANNER.next();
-
+        
         System.out.println("password: ");
         password = SCANNER.next();
-
+        
         System.out.println("rol(user/admin): ");
         String rolStr = SCANNER.next();
         rol = Usuario.USER;
         if (rolStr.equalsIgnoreCase("admin")) {
             rol = Usuario.ADMIN;
         }
-
+        
         if (containNumbers(nombre)) {
             throw new NameLastNameException("Nombre no puede contener numeros");
         } else if (containNumbers(apellidos)) {
@@ -610,8 +631,9 @@ public class Main {
 
     /**
      * Method to check if str contain a number
+     *
      * @param str
-     * @return boolean true if contain numbers else false 
+     * @return boolean true if contain numbers else false
      */
     private static boolean containNumbers(String str) {
         return str.contains("1")

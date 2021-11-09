@@ -41,7 +41,7 @@ public class Menus {
         "Trobar la base més repetida",
         "Trobar la base menys repetida",
         "Fer recompte de bases i mostrarles.",
-        "Convertir ARN a ADN.",
+        "Convertir ADN a ARN.",
         "Convertir ARN a ADN"};
     
     
