@@ -42,7 +42,8 @@ public class Menus {
         "Trobar la base menys repetida",
         "Fer recompte de bases i mostrarles.",
         "Convertir ADN a ARN.",
-        "Convertir ARN a ADN"};
+        "Convertir ARN a ADN",
+        "Longitud ADN"};
     
     
     // ======================= ADMINS =======================

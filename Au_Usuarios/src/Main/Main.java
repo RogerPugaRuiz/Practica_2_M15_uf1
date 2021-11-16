@@ -34,15 +34,16 @@ public class Main {
         "Intenta con algo diferente como un numero",
         "Lo siento pero esto esta fuera de mi programacion"};
 
-    public static final String ADN= "AGTCGCCTGCTGCAGCTGGTCAATCAAAAGAAATGAAACTTGACGAATA";
-    public static final String ARN= "AGUCGCCUGCUGCAGCUGGUCAAUCAAAAGAAAUGAAACUUGACGAAUA";
+    public static final String ADN = "AGTCGCCTGCTGCAGCTGGTCAATCAAAAGAAATGAAACTTGACGAATA";
+    public static final String ARN = "AGUCGCCUGCUGCAGCUGGUCAAUCAAAAGAAAUGAAACUUGACGAAUA";
+
     /**
      * Main method.
      *
      * @param args
      */
     public static void main(String[] args) {
-        
+
         if (!run()) {
             System.out.println("Imposible ejecutar el programa");
         }
@@ -57,7 +58,7 @@ public class Main {
         try {
             // load a date with json and bin file
             loadData();
-            
+
             int option = 0;
             do {
                 option = showMenu(MENU);
@@ -70,7 +71,7 @@ public class Main {
                         break;
                 }
             } while (option != 0);
-            
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
@@ -93,14 +94,14 @@ public class Main {
 
         // guardar los nuevos jugadores en archivo.bin
         bin.addList(usuarios, pt.getToken());
-        
+
     }
 
     /**
      * Method to read a json and import users.
      */
     public static void jsonImport() {
-        
+
         Scanner sc = new Scanner(System.in);
         System.out.println("¿Quieres importar usuarios de un archivo Json?(Si/No)");
         char s = sc.next().charAt(0);
@@ -116,7 +117,7 @@ public class Main {
                 System.out.printf("hay problemas con el archivo %s\n", jsonFile);
             }
         }
-        
+
     }
 
     /**
@@ -186,10 +187,10 @@ public class Main {
             final Scanner SCANNER = new Scanner(System.in);
             System.out.print("e-mail: ");
             String email = SCANNER.next();
-            
+
             System.out.print("password: ");
             String password = SCANNER.next();
-            
+
             login(email, password);
         } catch (LoginException ex) {
             System.out.println(ex.getMessage());
@@ -207,7 +208,7 @@ public class Main {
         try {
             Usuario loginUser = usuarios.login(email, password);
             System.out.println(loginUser.getAll());
-            
+
             switch (loginUser.getRol()) {
                 case "admin": // user is admin
                     admin(loginUser);
@@ -216,7 +217,7 @@ public class Main {
                     user(loginUser);
                     break;
             }
-            
+
         } catch (java.lang.NullPointerException npe) {
             throw new LoginException("e-mail o contraseña incorrecta");
         }
@@ -305,58 +306,70 @@ public class Main {
                     showBases();
                     break;
                 case 5:
-                    dnaToRna();                   
+                    dnaToRna();
                     break;
                 case 6:
                     rnaToDna();
                     break;
+                case 7:
+                    System.out.println("Introdueix Cadena ADN");
+                    Scanner sc = new Scanner(System.in);
+                    String cad = sc.next();
+                    String cadena = cad.toUpperCase();
+                    lengthADN(cadena);
             }
         } while (option != 0);
     }
 
     // ============================== USER MEHTODS =====================================
-    
     private static void reversedDNA() throws InvalidDNAException {
         System.out.println("Cadena ADN: " + ADN);
         DNATools rev = new DNATools();
         String cadena = rev.reversed(ADN);
         System.out.println("Volta ADN: " + cadena);
     }
-    
+
     private static void mostRepeatedBase() {
         System.out.println("Cadena ADN: " + ADN);
         DNATools most = new DNATools();
-        char caracter = most.baseMostRepeted(ADN);
+        char caracter = most.baseMesRepetida(ADN);
         System.out.println("El caracter de la cadena que mes repeteix es: " + caracter);
-        
     }
-    
+
     private static void leastRepeatedBase() {
         System.out.println("Cadena ADN: " + ADN);
         DNATools least = new DNATools();
         char caracter = least.baseLeastRepeated();
         System.out.println("El caracter de la cadena que menys es repeteix es: " + caracter);
     }
-    
+
     private static void showBases() {
         System.out.println("Cadena ADN: " + ADN);
         DNATools show = new DNATools();
         show.seeBases(ADN);
     }
-    
+
     private static void dnaToRna() {
         System.out.println("Cadena ADN: " + ADN);
         DNATools toRNA = new DNATools();
         String cadena = toRNA.convert(ADN, 0);
         System.out.println("ADN to ARN: " + cadena);
-        
+
     }
-    
+
     private static void rnaToDna() {
         System.out.println("Cadena ARN: " + ARN);
         DNATools toRNA = new DNATools();
         String cadena = toRNA.convert(ARN, 1);
         System.out.println("ARN to ADN: " + cadena);
+    }
+
+    private static void lengthADN(String cadena) {
+        System.out.println("Cadena ADN: " + cadena);
+        DNATools len = new DNATools();
+        int num = 0;
+        num = len.longitudCadenaADN(cadena);
+        System.out.println("La longitud de la cadena d'ADN es de " + num + " carcaters");
     }
 
     // ============================== ADMIN METHODS ====================================
@@ -389,7 +402,7 @@ public class Main {
                     System.out.println(ex.getMessage());
                 }
                 break;
-                
+
                 case 2: // read with diferents options
                     read();
                     break;
@@ -399,7 +412,7 @@ public class Main {
                 case 4: // user delete
                     delete();
                     break;
-                
+
             }
         } while (option != 0);
     }
@@ -428,7 +441,7 @@ public class Main {
                     updateRol();
                     break;
             }
-            
+
         } while (option != 0);
     }
 
@@ -439,11 +452,11 @@ public class Main {
         final Scanner SC = new Scanner(System.in);
         System.out.print("Nombre: ");
         String nombre = SC.next();
-        
+
         System.out.print("E-mail: ");
         String email = SC.next();
         Usuario u = usuarios.search(email);
-        
+
         u.setNombre(nombre);
     }
 
@@ -454,11 +467,11 @@ public class Main {
         final Scanner SC = new Scanner(System.in);
         System.out.print("Apellidos: ");
         String lastname = SC.nextLine();
-        
+
         System.out.println("E-mail: ");
         String email = SC.next();
         Usuario u = usuarios.search(email);
-        
+
         u.setApellidos(lastname);
     }
 
@@ -469,11 +482,11 @@ public class Main {
         final Scanner SC = new Scanner(System.in);
         System.out.print("Password: ");
         String password = SC.next();
-        
+
         System.out.print("E-mail: ");
         String email = SC.next();
         Usuario u = usuarios.search(email);
-        
+
         u.setPassword(password);
     }
 
@@ -484,7 +497,7 @@ public class Main {
         final Scanner SC = new Scanner(System.in);
         System.out.print("Rol: ");
         String rol = SC.next();
-        
+
         System.out.print("E-mail: ");
         String email = SC.next();
         Usuario u = usuarios.search(email);
@@ -493,7 +506,7 @@ public class Main {
         } else {
             u.setRol(Usuario.USER);
         }
-        
+
     }
 
     /**
@@ -501,9 +514,9 @@ public class Main {
      */
     public static void delete() {
         final Scanner SCANNER = new Scanner(System.in);
-        
+
         System.out.print("E-mail: ");
-        
+
         String s = SCANNER.nextLine();
         s = s.replace(" ", "");
         String[] emails = s.split(",");
@@ -521,7 +534,7 @@ public class Main {
                 System.out.printf("%s %s no fue eliminado por no confirmar la operación\n", usuario.getNombre(), usuario.getApellidos());
             }
         }
-        
+
     }
 
     /**
@@ -529,7 +542,7 @@ public class Main {
      */
     public static void read() {
         final Scanner SCANNER = new Scanner(System.in);
-        
+
         int option = -1;
         do {
             try {
@@ -564,13 +577,13 @@ public class Main {
                         System.out.println(userSearch.getAll());
                         System.out.printf("Numero de usuario: %d encontrados\n", userSearch.count());
                         break;
-                    
+
                 }
             } catch (UserAlreadyExistException ex) {
                 System.out.println(ex.getMessage());
             }
         } while (option != 0);
-        
+
     }
 
     /**
@@ -578,33 +591,33 @@ public class Main {
      */
     public static void create() throws NameLastNameException {
         final Scanner SCANNER = new Scanner(System.in);
-        
+
         String nombre;
         String apellidos;
         String email;
         String password;
         int rol;
-        
+
         System.out.println("nombre: ");
         nombre = SCANNER.next();
-        
+
         System.out.println("apellido: ");
         SCANNER.nextLine(); // para poder capturar una linea con espacios
         apellidos = SCANNER.nextLine();
-        
+
         System.out.println("email: ");
         email = SCANNER.next();
-        
+
         System.out.println("password: ");
         password = SCANNER.next();
-        
+
         System.out.println("rol(user/admin): ");
         String rolStr = SCANNER.next();
         rol = Usuario.USER;
         if (rolStr.equalsIgnoreCase("admin")) {
             rol = Usuario.ADMIN;
         }
-        
+
         if (containNumbers(nombre)) {
             throw new NameLastNameException("Nombre no puede contener numeros");
         } else if (containNumbers(apellidos)) {

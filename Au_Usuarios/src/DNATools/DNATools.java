@@ -18,9 +18,10 @@ public class DNATools {
         'G',
         'C',
         'T'};
-    
+
     private final int ADN_TO_ARN = 0;
     private final int ARN_TO_ADN = 1;
+
     /**
      * Method to reversed the string adn
      *
@@ -70,7 +71,7 @@ public class DNATools {
      * @param cadena
      * @return the letter of the most repeated string.
      */
-    public char baseMostRepeted(String cadena) {
+    public char baseMesRepetida(String cadena) {
         cadena = cadena.toUpperCase();
         char[] carctersADN = cadena.toCharArray();
         int contador = 0;
@@ -104,6 +105,7 @@ public class DNATools {
 
     /**
      * Counts the bases of the repeated DNA strand.
+     *
      * @return the base of the most repeated string
      */
     public char baseLeastRepeated(/*String cadena*/) {
@@ -149,10 +151,11 @@ public class DNATools {
 
     /**
      * Count bases and show it.
-     * @param cadena 
+     *
+     * @param cadena
      */
     public void seeBases(String cadena) {
-        
+
         cadena = cadena.toUpperCase();
         char caracter = 0;
         int contA = 0;
@@ -183,43 +186,67 @@ public class DNATools {
         System.out.println("GUANINAS: " + contG);
         //return cadena;
     }
-    
-     /**
+
+    /**
      * Method to convert DNA to RNA or RNA to DNA
+     *
      * @param code String ARN OR ADN
      * @param i type conversion
-     * @return string convertion 
+     * @return string convertion
      */
     public String convert(String code, int i) {
         //0 ADN to ARN
         //1 ARN to ADN
-        
+
         char array[] = code.toCharArray();
         String newString = "";
         switch (i) {
             case 0:
                 for (char c : array) {
                     c = Character.toUpperCase(c);
-                    
-                    if (c == 'T'){
+
+                    if (c == 'T') {
                         newString += 'U';
-                    }else{
+                    } else {
                         newString += c;
                     }
-                }   break;
+                }
+                break;
             case 1:
                 for (char c : array) {
                     c = Character.toUpperCase(c);
-                    
-                    if (c == 'U'){
+
+                    if (c == 'U') {
                         newString += 'T';
-                    }else{
+                    } else {
                         newString += c;
                     }
-                }   break;
+                }
+                break;
             default:
                 return "ERROR la conversión no es valida";
         }
         return newString;
+    }
+
+    /**
+     * Method that counts the length of the string ADN
+     * @param cadena user entered string.
+     * @return number of characters in the string.
+     */
+    public int longitudCadenaADN(String cadena) {
+        int cont = 0;
+        int err = 0;
+        char[] carctersADN = cadena.toCharArray();
+
+        for (char cad : carctersADN) {
+            err++;
+            if (cad == 'A' || cad == 'T' || cad == 'G' || cad == 'C') {
+                cont++;
+            } else {
+                System.out.println("Error, el format de la cadena d’ADN no és vàlid. Caracter incorrecte a la posició " + err);
+            }
+        }
+        return cont;
     }
 }
